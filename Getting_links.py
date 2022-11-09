@@ -33,21 +33,21 @@ def main():
     sub_panels = full_content.find_all('li', class_="second-level-li panel")
 
     count = 0
-    lable_list = []
+    label_list = []
     for sub_panel in sub_panels:
         label = sub_panel.a.text.strip()
-        if label in lable_list:
+        if label in label_list:
             break
         else:
-            lable_list.append(label)
+            label_list.append(label)
             link = sub_panel.a.get('href')
             if link[1:7] == 'online':
                 link = 'https://www.shufersal.co.il' + link
             count += 1
             csv_writer.writerow([count, label, link])
-            # print("_______________________________________")
-            # print(label)
-            # print(link)
+            print("_______________________________________")
+            print(label)
+            print(link)
 
     csv_file.close()
 
