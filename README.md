@@ -6,14 +6,16 @@ from the online supermarket site of the Shufersal chain: https://www.shufersal.c
 As first step, the user should run the Getting_links.py script to collect an up to date links 
 of all the subcategories inside the webside. --> all the links are collected to the shufersal_links.csv file.
 
-In order to collect the data from one of the mentioned subcategories, the user need to run the one of the two data scraping script:
+In order to collect the data from one of the mentioned subcategories, the user need to run page_scraper.py python3 script:
 
-1. page_scraper: the script takes an url* of one of the subcategories in the Shufersal site and returns the following attributes for each product in that category:
+page_scraper: 
+the script takes an url* of one of the subcategories in the Shufersal site and returns the following attributes for each product in that category:
             - product name
             - price
             - price unit
             - container
             - supplier
-* at this stage the subcategory url needs to be changed manually inside the script ("MAIN URL")
+            
+* at this stage the subcategory url needs to be changed manually inside the script (under the variable "MAIN URL")
 
-2. ...
+
