@@ -6,19 +6,26 @@ def connection(user, password):
     """'connection' gets a user and a password to MySQL Server
     and returns a pymysql.connection.connection attribute"""
 
-    con = pymysql.connect(host='localhost',
-                          user=user,
-                          password=password,
-                          cursorclass=pymysql.cursors.DictCursor)
+    try:
+        con = pymysql.connect(host='localhost',
+                              user=user,
+                              password=password,
+                              cursorclass=pymysql.cursors.DictCursor)
+    except RuntimeError as err:
+        print('!!')
     return con
 
 
 def create_database(con, name):
     """'create_database' get a pymysql.connection.connection attribute and a name and creates an sql database, called by the name input"""
 
-    with con.cursor() as cursor:
-        database = f'CREATE DATABASE {name}'
-        cursor.execute(database)
+    try:
+        with con.cursor() as cursor:
+            database = f'CREATE DATABASE {name}'
+            cursor.execute(database)
+    except pymysql.err.ProgrammingError as e:
+        print(f'ERROR {e.args[0]}: {e.args[1]}')
+        raise pymysql.err.ProgrammingError
 
 
 def create_table(con, database, name, *args):
@@ -49,19 +56,27 @@ def filling_table(con, database, table, variables, *data):
         cursor.execute(fill_table, [*data])
         con.commit()
 
+def delete_database(user, password, database):
+    con = connection(user, password)
 
-def main():
+    with con.cursor() as cursor:
+        delete_database_sql = f"DROP DATABASE {database};"
+        cursor.execute(delete_database_sql)
+
+    return
+
+def main(user, password):
     """
     Main function of the module, creates the foundation of the 'shufersal' database using the MySQL Server
     """
 
-    user = sys.argv[1]
-    password = sys.argv[2]
-
     connect = connection(user, password)
     database_name = 'shufersal'
 
-    create_database(connect, database_name)
+    try:
+        create_database(connect, database_name)
+    except pymysql.err.ProgrammingError as e:
+        raise pymysql.err.ProgrammingError
     category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', 'url VARCHAR(200)'
     create_table(connect, database_name, 'category', *category_table_data)
     suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)'
@@ -76,4 +91,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1], sys.argv[2])
