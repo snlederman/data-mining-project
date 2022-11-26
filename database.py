@@ -23,7 +23,7 @@ def create_table(con, database, name, *args):
         select_database = f'USE {database}'
         cursor.execute(select_database)
         content = str(args).replace("'", "")
-        table = f'CREATE TABLE {name}{content}'
+        table = f'CREATE TABLE {name} {content}'
         cursor.execute(table)
 
 
@@ -42,14 +42,15 @@ def filling_table(con, database, table, variables, *data):
 
 if __name__ == '__main__':
     connect = connection('root', 'rootroot')
-    shufersal = create_database(connect, 'shufersal')
-    create_table(connect, shufersal, 'category', 'id INT AUTO_INCREMENT PRIMARY KEY',
-                 'name VARCHAR(45)', 'url VARCHAR(200)')
-    create_table(connect, shufersal, 'suppliers', 'id INT AUTO_INCREMENT PRIMARY KEY',
-                 'name VARCHAR(45)')
-    create_table(connect, shufersal, 'product_details', 'id INT AUTO_INCREMENT PRIMARY KEY',
-                 'name VARCHAR(45)', 'FOREIGN KEY (id) REFERENCES suppliers(id)',
-                 'FOREIGN KEY (id) REFERENCES category(id)')
-    create_table(connect, shufersal, 'id INT AUTO_INCREMENT PRIMARY KEY', 'price INT',
-                 'price_unit INT', 'price_unit_unit VARCHAR(45)', 'container VARCHAR(45)',
-                 'date_time DATETIME', 'FOREIGN KEY (id) REFERENCES product_details(id)')
+    create_database(connect, 'shufersal')
+    category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', 'url VARCHAR(200)'
+    create_table(connect, 'shufersal', 'category', *category_table_data)
+    suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)'
+    create_table(connect, 'shufersal', 'suppliers', *suppliers_table_data)
+    product_details_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', \
+                           'FOREIGN KEY (id) REFERENCES suppliers(id)', 'FOREIGN KEY (id) REFERENCES category(id)'
+    create_table(connect, 'shufersal', 'product_details', *product_details_data)
+    product_price_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'price INT', 'price_unit INT',\
+                         'price_unit_unit VARCHAR(45)', 'container VARCHAR(45)', 'date_time DATETIME',\
+                         'FOREIGN KEY (id) REFERENCES product_details(id)'
+    create_table(connect, 'shufersal', 'product_price', *product_price_data)
