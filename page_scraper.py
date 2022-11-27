@@ -27,6 +27,7 @@ con = connection('root', 'rootroot')
 MAIN_URL = 'https://www.shufersal.co.il/online/he/S'
 general_url = 'https://www.shufersal.co.il'
 categories = 3
+LENGTH_GENERAL_URL = len(general_url)
 
 def get_urls():
     """Finds the link to specific category websites."""
@@ -56,8 +57,9 @@ def get_urls():
                     category_url = url
                     if url[1:7] == 'online':
                         category_url = general_url + url
-                    category_urls[category] = category_url
-                    filling_table(con, 'shufersal', 'category', '(name, url)', category, category_url)
+                    if category_url[:LENGTH_GENERAL_URL] == general_url:
+                        category_urls[category] = category_url
+                        filling_table(con, 'shufersal', 'category', '(name, url)', category, category_url)
     return category_urls
 
 
@@ -138,7 +140,7 @@ def parse_data(category_urls):
 
 if __name__ == '__main__':
     U = get_urls()
-    parse_data(U)
+#    parse_data(U)
 
 #filling_table(con, 'shufersal', 'category', '(name, url)', product_name, price)
 #filling_table(con, 'shufersal', 'category', '(name, url)', product_name, price)
