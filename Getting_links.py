@@ -6,11 +6,12 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 MAIN_URL = 'https://www.shufersal.co.il/online/he/S'
+MINIMUM_NUMBER_OF_LINKS = 20
 
 
 def from_url_to_soup(url_address):
     """
-     from_url_to_soup gets an url address and returns it html content using BeautifulSoup4
+     get_soup_from_url gets an url address and returns it html content using BeautifulSoup4
 
     :param url_address:  url address string
     :return: soup - class 'bs4.BeautifulSoup'
@@ -25,15 +26,17 @@ def main():
     and the name of the categories (in hebrew). all the data is stored in shufersal_links.csv
     """
 
-    csv_file = open('shufersal_links.csv', 'w')
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(['id', 'Destination', 'Link'])
+    # csv_file = open('shufersal_links.csv', 'w')
+    # csv_writer = csv.writer(csv_file)
+    # csv_writer.writerow(['id', 'Destination', 'Link'])
 
     full_content = from_url_to_soup(MAIN_URL)
     sub_panels = full_content.find_all('li', class_="second-level-li panel")
 
     count = 0
     label_list = []
+    links_list = []
+    category_list = []
     for sub_panel in sub_panels:
         label = sub_panel.a.text.strip()
         if label in label_list:
@@ -44,17 +47,23 @@ def main():
             if link[1:7] == 'online':
                 link = 'https://www.shufersal.co.il' + link
             count += 1
+            links_list.append(link)
+            category_list.append(label)
             csv_writer.writerow([count, label, link])
-            print("_______________________________________")
-            print(label)
-            print(link)
+
+
+
+
+
 
     csv_file.close()
 
-    if count <= 20:
+    if count <= MINIMUM_NUMBER_OF_LINKS:
         raise Exception(f" only {count} links were scraped, please check the script/file/site...")
     else:
-        print(f"{count} links were scraped.")
+        print(f"{len(links_list)} categories and their links were scraped.")
+
+    return links_list, category_list
 
 
 if __name__ == '__main__':
