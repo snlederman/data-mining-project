@@ -35,7 +35,7 @@ def filling_table(con, database, table, variables, *data):
         variables = variables.replace("'", "")
         values = len(data)*'%s, '
         values = values.rstrip(", ")
-        fill_table = f"INSERT INTO {table} {variables} VALUES ({values})"
+        fill_table = f"REPLACE INTO {table} {variables} VALUES ({values})"
         cursor.execute(fill_table, [*data])
         con.commit()
 
@@ -43,12 +43,12 @@ def filling_table(con, database, table, variables, *data):
 if __name__ == '__main__':
     connect = connection('root', 'rootroot')
     create_database(connect, 'shufersal')
-    category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', 'url VARCHAR(200)'
+    category_table_data = 'name VARCHAR(45) PRIMARY KEY', 'url VARCHAR(500)'
     create_table(connect, 'shufersal', 'category', *category_table_data)
     suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)'
     create_table(connect, 'shufersal', 'suppliers', *suppliers_table_data)
     product_details_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', \
-                           'FOREIGN KEY (id) REFERENCES suppliers(id)', 'FOREIGN KEY (id) REFERENCES category(id)'
+                           'FOREIGN KEY (id) REFERENCES suppliers(id)', 'FOREIGN KEY (name) REFERENCES category(name)'
     create_table(connect, 'shufersal', 'product_details', *product_details_data)
     product_price_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'price INT', 'price_unit INT',\
                          'price_unit_unit VARCHAR(45)', 'container VARCHAR(45)', 'date_time DATETIME',\
