@@ -26,8 +26,10 @@ from database import filling_table
 con = connection('root', 'rootroot')
 MAIN_URL = 'https://www.shufersal.co.il/online/he/S'
 general_url = 'https://www.shufersal.co.il'
-categories = 3
 LENGTH_GENERAL_URL = len(general_url)
+categories = 3
+range_list = [(3, 15), (2, 10), (4, 15)]
+
 
 def get_urls():
     """Finds the link to specific category websites."""
@@ -36,7 +38,6 @@ def get_urls():
     driver.maximize_window()
     driver.get(MAIN_URL)
     action = ActionChains(driver)
-    range_list = [(3, 15), (2, 10), (4, 15)]
     category_urls = dict()
     for i in range(categories):
         ELEMENT = driver.find_element(By.XPATH, f'/ html / body / main / header / div[2] / nav / div / ul[1] / li[{i+2}]')
@@ -64,12 +65,12 @@ def get_urls():
 
 
 def parse_data(category_urls):
-    category_urls_values = list(category_urls.values())
-    for category_url in category_urls_values:
+    category_urls_keys = list(category_urls.keys())
+    for category_url in category_urls_keys:
         options = Options()
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.maximize_window()
-        driver.get(category_url)
+        driver.get(category_urls[category_url])
         for scroll in range(10):
             SCROLL_PAUSE_TIME = 5
             driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
@@ -83,30 +84,28 @@ def parse_data(category_urls):
             count = 0
             for class_ in class_type:
                 products = full_content.find_all('li', class_=class_type)
-                print(f"got {len(products)} products")
                 for product in products:
                     count += 1
 
-                    product_id = product['data-product-code']
-                    print(product_id)
+                    try:
+                        product_id = product['data-product-code']
+                    except AttributeError as err:
+                        product_id = 'NaN'
 
                     try:
                         product_name = product.find('div', class_='text description').strong.text
-                        print(count, '.', product_name)
                     except AttributeError as err:
-                        print(count, '.None')
+                        product_name = 'NaN'
 
                     try:
                         price = product.find('span', class_='price').span.text
-                        print("price:", price.strip())
                     except AttributeError as err:
-                        print("price: None")
+                        price = 'NaN'
 
                     try:
                         priceUnit = product.find('span', class_='priceUnit').text
-                        print("priceUnit:", priceUnit.strip())
                     except AttributeError as err:
-                        print("priceUnit: None")
+                        priceUnit = 'NaN'
 
                     try:
                         row = product.find('div', class_='labelsListContainer').div
@@ -114,28 +113,31 @@ def parse_data(category_urls):
                         if type(container) == str or len(container) < 2:
                             try:
                                 supplier = row.span.text
-                                print("supplier:", supplier.strip())
                             except AttributeError as err:
-                                print("supplier: None")
+                                supplier = 'NaN'
 
                         else:
                             try:
                                 container = row.find_all('span')[0].text
-                                print("container:", container.strip())
                             except AttributeError as err:
-                                print("container: None")
+                                container = 'NaN'
 
                             try:
                                 supplier = row.find_all('span')[1].text
-                                print("supplier:", supplier.strip())
                             except AttributeError as err:
-                                print("supplier: None")
+                                supplier = 'NaN'
+
+
+                        filling_table(con, 'shufersal', 'suppliers', '(name)', supplier)
+                        filling_table(con, 'shufersal', 'products_details', '(id, name, id_supplier, id_categories)',
+                                      product_id, product_name, supplier, category_url)
+                        filling_table(con, 'shufersal', 'product_price', '(price, price_unit, container, product_id)',
+                                      price, priceUnit, container, product_id)
 
                     except AttributeError as err:
-                        print("priceUnit: None")
-                        print("container: None")
+                        priceUnit = 'NaN'
+                        container = 'NaN'
 
-                    print()
 
 
 if __name__ == '__main__':

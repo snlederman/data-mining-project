@@ -47,10 +47,11 @@ if __name__ == '__main__':
     create_table(connect, 'shufersal', 'category', *category_table_data)
     suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)'
     create_table(connect, 'shufersal', 'suppliers', *suppliers_table_data)
-    product_details_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', \
-                           'FOREIGN KEY (id) REFERENCES suppliers(id)', 'FOREIGN KEY (name) REFERENCES category(name)'
+    product_details_data = 'id VARCHAR(45) PRIMARY KEY', 'name VARCHAR(45)', \
+                           'FOREIGN KEY (name) REFERENCES category(name)',\
+                           'FOREIGN KEY (id) REFERENCES suppliers(id)'
     create_table(connect, 'shufersal', 'product_details', *product_details_data)
     product_price_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'price INT', 'price_unit INT',\
-                         'price_unit_unit VARCHAR(45)', 'container VARCHAR(45)', 'date_time DATETIME',\
+                         'container VARCHAR(45)'\
                          'FOREIGN KEY (id) REFERENCES product_details(id)'
     create_table(connect, 'shufersal', 'product_price', *product_price_data)
