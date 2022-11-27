@@ -19,6 +19,7 @@ def from_url_to_soup(url_address):
     soup = BeautifulSoup(r.content, "html.parser")
     return soup
 
+
 def main():
     """
     main runs a search through Shufersal online main header and returns all the links to it sub categories
@@ -48,7 +49,7 @@ def main():
             print("_______________________________________")
             print(label)
             print(link)
-
+    print(label_list)
     csv_file.close()
 
     if count <= 20:
