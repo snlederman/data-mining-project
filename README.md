@@ -4,19 +4,27 @@ ___
 >data-mining-project repo contains a package of files that enables the user to scrab the data 
 from the online supermarket site of the Shufersal chain: https://www.shufersal.co.il/online/he/S 
 
-As first step, the user should run the **Getting_links.py** script to collect an up to date links 
-of all the subcategories inside the webside. --> all the links are collected to the *shufersal_links.csv* file.
+to run the scraper, one should run main.py:
+usage: main.py [-h] [-url URL] [-gl] [-all] [-c] [-dc] [-d] user password
 
-In order to collect the data from one of the mentioned subcategories, the user need to run **page_scraper.py** python3 script:
+positional arguments:
+  user        user name to mySQL data server
+  password    password to mySQL data server
 
-**page_scraper**\
-the script takes an url** of one of the subcategories in the Shufersal site and returns the following attributes for each product in that category:
-* product name
-* price
-* price unit
-* container
-* supplier
+optional arguments:
+  -h, --help  show this help message and exit
+  -url URL    specific category url from the "Shufersal" online site to parse
+              and collect to the Shufersal database
+  -gl         get subcategories links to parse and fill category table
+  -all        get all links from category table, parse and fill "Shufersal"
+              database
+  -c          create "Shufersal" database
+  -dc         delete existing "Shufersal" database and creating a new one
+  -d          delete "Shufersal" database
 
-** at this stage the subcategory url needs to be changed manually inside the script (under the variable "MAIN URL")
+NOTE: make sure no Shufersal site is open when running main.py
+NOTE: the urls for the specific url option (-url) should be from the second sub category type, for example:
+![](../../../../Desktop/Screen Shot 2022-11-28 at 23.38.49.png)
 
-
+The scraped data will be inserted to the "shufersal" database:
+![](EER Diagram - second milestone.png)

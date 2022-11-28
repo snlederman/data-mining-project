@@ -3,6 +3,8 @@ The script extracts all relevant urls addresses from the online supermarket of "
 """
 
 import time
+
+import pymysql
 from bs4 import BeautifulSoup
 import requests
 import sys
@@ -15,15 +17,13 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from database import connection
 from database import filling_table
-from page_scraper import create_connection
-from page_scraper import sql_queary
 
-
+BASE_URL = 'https://www.shufersal.co.il/online/he/s'
 MAIN_URL = 'https://www.shufersal.co.il'
 LENGTH_GENERAL_URL = len(MAIN_URL)
 RANGE_LIST = [(3, 15), (2, 10), (4, 15)]
 MINIMUM_NUMBER_OF_LINKS = 20
-
+database_name = 'shufersal'
 
 def from_url_to_soup(url_address):
     """
@@ -36,12 +36,26 @@ def from_url_to_soup(url_address):
     soup = BeautifulSoup(r.content, "html.parser")
     return soup
 
+def create_connection(user_name, user_password):
+    connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=database_name)
+    return connection
+
+def sql_queary(query, connection):
+    """
+    "sql_connection" receives a string with sql query and returns it result using pymysql module.
+    """
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchall()
+        return result
 
 def get_categories_links(user, password):
-    connection = create_connection(user, password)
+    connect = create_connection(user, password)
     categories_link_list_query = f"SELECT url FROM category;"
-    categories_link = sql_queary(categories_link_list_query, connection)
-    return list(map(lambda x:x[0] ,categories_link))
+    categories_link = sql_queary(categories_link_list_query, connect)
+    return list(map(lambda x: x[0], categories_link))
+
 
 def get_urls(user, password):
     """
@@ -52,18 +66,20 @@ def get_urls(user, password):
     options = Options()
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.maximize_window()
-    driver.get(MAIN_URL)
+    driver.get(BASE_URL)
     action = ActionChains(driver)
     category_urls = dict()
+    fill_count = 0
 
     for i in range(len(RANGE_LIST)):
-        ELEMENT = driver.find_element(By.XPATH, f'/ html / body / main / header / div[2] / nav / div / ul[1] / li[{i+2}]')
+        ELEMENT = driver.find_element(By.XPATH,
+                                      f'/ html / body / main / header / div[2] / nav / div / ul[1] / li[{i + 2}]')
         action.move_to_element(ELEMENT).perform()
         time.sleep(1)
         elements = RANGE_LIST[i]
 
         for j in range(*elements):
-            ELEMENT = driver.find_element(By.XPATH, f'// *[ @ id = "secondMenu{i+2}"] / li[{j}]')
+            ELEMENT = driver.find_element(By.XPATH, f'// *[ @ id = "secondMenu{i + 2}"] / li[{j}]')
             action.move_to_element(ELEMENT).perform()
             html = driver.page_source
             soup = BeautifulSoup(html, "lxml")
@@ -80,14 +96,12 @@ def get_urls(user, password):
                         category_urls[category] = category_url
                         categories_links = get_categories_links(user, password)
                         if category_url not in categories_links:
+                            fill_count += 1
                             filling_table(con, 'shufersal', 'category', '(category, url)', category, category_url)
 
+    print(f'{fill_count} sub categories urls were scraped successfully from "Shupersal" online site')
     return category_urls
 
 
 if __name__ == '__main__':
     get_urls(sys.argv[1], sys.argv[2])
-
-
-
-
