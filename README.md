@@ -23,8 +23,6 @@ optional arguments:
   -d          delete "Shufersal" database
 
 NOTE: make sure no Shufersal site is open when running main.py
-NOTE: the urls for the specific url option (-url) should be from the second sub category type, for example:
-![](../../../../Desktop/Screen Shot 2022-11-28 at 23.38.49.png)
+NOTE: the urls for the specific url option (-url) should be from the second sub category type, for example look at sub_links.png
 
-The scraped data will be inserted to the "shufersal" database:
-![](EER Diagram - second milestone.png)
+The scraped data will be inserted to the "shufersal" database, ERD diagram at EER Diagram - second milestone.png
