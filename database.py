@@ -7,13 +7,13 @@ def connection(user, password):
     and returns a pymysql.connection.connection attribute"""
 
     try:
-        con = pymysql.connect(host='localhost',
-                              user=user,
-                              password=password,
-                              cursorclass=pymysql.cursors.DictCursor)
+        connect = pymysql.connect(host='localhost',
+                                  user=user,
+                                  password=password,
+                                  cursorclass=pymysql.cursors.DictCursor)
     except RuntimeError as err:
-        print('!!')
-    return con
+        print(f'{err}')
+    return connect
 
 
 def create_database(con, name):
@@ -52,9 +52,10 @@ def filling_table(con, database, table, variables, *data):
         variables = variables.replace("'", "")
         values = len(data) * '%s, '
         values = values.rstrip(", ")
-        fill_table = f"INSERT INTO {table} {variables} VALUES ({values})"
+        fill_table = f"REPLACE INTO {table} {variables} VALUES ({values})"
         cursor.execute(fill_table, [*data])
         con.commit()
+
 
 def delete_database(user, password, database):
     con = connection(user, password)
@@ -64,6 +65,7 @@ def delete_database(user, password, database):
         cursor.execute(delete_database_sql)
 
     return
+
 
 def main(user, password):
     """
@@ -77,17 +79,27 @@ def main(user, password):
         create_database(connect, database_name)
     except pymysql.err.ProgrammingError as e:
         raise pymysql.err.ProgrammingError
-    category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', 'url VARCHAR(200)'
+    category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'category VARCHAR(45)', 'url VARCHAR(500)'
     create_table(connect, database_name, 'category', *category_table_data)
-    suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)'
+
+    suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'supplier VARCHAR(45)'
     create_table(connect, database_name, 'suppliers', *suppliers_table_data)
-    product_details_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'name VARCHAR(45)', \
-                           'FOREIGN KEY (id) REFERENCES suppliers(id)', 'FOREIGN KEY (id) REFERENCES category(id)'
-    create_table(connect, database_name, 'product_details', *product_details_data)
-    product_price_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'price INT', 'price_unit INT', \
-                         'price_unit_unit VARCHAR(45)', 'container VARCHAR(45)', 'date_time DATETIME', \
-                         'FOREIGN KEY (id) REFERENCES product_details(id)'
+
+    product_price_data = 'id INT PRIMARY KEY', 'price INT', 'price_unit VARCHAR(45)', \
+                         'container VARCHAR(45)', 'date_time DATETIME'
     create_table(connect, database_name, 'product_price', *product_price_data)
+
+    product_details_data = 'id INT PRIMARY KEY', 'product_id VARCHAR(20)', 'name VARCHAR(200)', \
+                           'id_suppliers INT', 'id_category INT', \
+                           'FOREIGN KEY (id_suppliers) REFERENCES suppliers(id)', \
+                           'FOREIGN KEY (id_category) REFERENCES category(id)', \
+                           'FOREIGN KEY (id) REFERENCES product_price(id)'
+
+    create_table(connect, database_name, 'product_details', *product_details_data)
+
+    with connect.cursor() as cursor:
+        FOREIGN_KEY_CHECKS = 'SET FOREIGN_KEY_CHECKS = 0;'
+        cursor.execute(FOREIGN_KEY_CHECKS)
 
 
 if __name__ == '__main__':

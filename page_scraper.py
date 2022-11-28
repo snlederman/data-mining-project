@@ -7,70 +7,124 @@ the following attributes for each product in that category:
     - container
     - supplier
 """
-
+import datetime
 import time
-import grequests
+import sys
 from bs4 import BeautifulSoup
+import pymysql
 # ____selenium____
 from selenium import webdriver
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from database import connection
 from database import filling_table
-
+from getting_shufersal_links import get_categories_links
+from getting_shufersal_links import get_urls
 
 ## main url
-con = connection('root', 'rootroot')
+con = connection('root', 'root1!2@')
 MAIN_URL = 'https://www.shufersal.co.il/online/he/S'
 general_url = 'https://www.shufersal.co.il'
 LENGTH_GENERAL_URL = len(general_url)
 categories = 3
 range_list = [(3, 15), (2, 10), (4, 15)]
+database_name = 'shufersal'
 
 
-def get_urls():
-    """Finds the link to specific category websites."""
-    options = Options()
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    driver.maximize_window()
-    driver.get(MAIN_URL)
-    action = ActionChains(driver)
-    category_urls = dict()
-    for i in range(categories):
-        ELEMENT = driver.find_element(By.XPATH, f'/ html / body / main / header / div[2] / nav / div / ul[1] / li[{i+2}]')
-        action.move_to_element(ELEMENT).perform()
-        time.sleep(1)
-        elements = range_list[i]
-        for j in range(*elements):
-            ELEMENT = driver.find_element(By.XPATH, f'// *[ @ id = "secondMenu{i+2}"] / li[{j}]')
-            action.move_to_element(ELEMENT).perform()
-            html = driver.page_source
-            soup = BeautifulSoup(html, "lxml")
-            menu_elements = soup.find_all('ul', class_="thirdMenu")
-            for menu_element in menu_elements:
-                category_elements = menu_element.find_all('div', class_="content")
-                for category_element in category_elements:
-                    category = category_element.find("a").text.strip()
-                    url = category_element.find("a")["href"]
-                    category_url = url
-                    if url[1:7] == 'online':
-                        category_url = general_url + url
-                    if category_url[:LENGTH_GENERAL_URL] == general_url:
-                        category_urls[category] = category_url
-                        filling_table(con, 'shufersal', 'category', '(name, url)', category, category_url)
-    return category_urls
+def create_connection(user_name, user_password):
+    connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=database_name)
+    return connection
 
 
-def parse_data(category_urls):
-    category_urls_keys = list(category_urls.keys())
-    for category_url in category_urls_keys:
+def sql_queary(query, connection):
+    """
+    "sql_connection" receives a string with sql query and returns it result using pymysql module.
+    """
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchall()
+        return result
+
+
+def get_category_urls(user, password):
+    connection = create_connection(user, password)
+    links_query = f"SELECT url FROM category;"
+    links = sql_queary(links_query, connection)
+
+    connection = create_connection(user, password)
+    category_id_query = f"SELECT id FROM category;"
+    category_id = sql_queary(category_id_query, connection)
+
+    return links, category_id
+
+
+def get_supplier_id(supplier, user, password):
+    try:
+        connection = create_connection(user, password)
+        supplier = supplier.replace('"', '""')
+        supplier_id_query = f'SELECT id FROM suppliers WHERE supplier = "{supplier}";'
+        supplier_id = sql_queary(supplier_id_query, connection)
+
+    except pymysql.err.ProgrammingError:
+        connection = create_connection(user, password)
+        supplier_id_query = """SELECT id FROM suppliers WHERE supplier = '{supplier}';"""
+        supplier_id = sql_queary(supplier_id_query, connection)
+
+    return supplier_id[0][0]
+
+
+def get_supplier_list(user, password):
+    connection = create_connection(user, password)
+    suppliers_list_query = f"SELECT supplier FROM suppliers;"
+    suppliers_list = sql_queary(suppliers_list_query, connection)
+    return list(map(lambda x: x[0], suppliers_list))
+
+
+def get_products_id_list(user, password):
+    connection = create_connection(user, password)
+    products_id_query = f"SELECT product_id FROM product_details;"
+    products_id = sql_queary(products_id_query, connection)
+    return list(map(lambda x: x[0], products_id))
+
+
+def get_date_time():
+    ts = time.time()
+    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    return timestamp
+
+
+def fill_url_get_id(user, password, category_url):
+    categories_links = get_categories_links(user, password)
+    if category_url not in categories_links:
+        filling_table(con, 'shufersal', 'category', '(url)', category_url)
+
+    connection = create_connection(user, password)
+    category_id_query = f"SELECT id FROM category WHERE url = {category_url};"
+    category_id = sql_queary(category_id_query, connection)
+    return category_url, category_id
+
+
+def get_product_count(user, password):
+    connection = create_connection(user, password)
+    count_query = f"SELECT count(*) FROM product_details;"
+    count = sql_queary(count_query, connection)
+    return count
+
+
+def parse_data(user, password, *args):
+    if args:
+        category_urls, category_ids = fill_url_get_id(user, password, args[0])
+    else:
+        category_urls, category_ids = get_category_urls(user, password)
+
+    product_count = get_product_count(user, password)
+    for url_index, category_url in enumerate(category_urls):
         options = Options()
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.maximize_window()
-        driver.get(category_urls[category_url])
+        driver.get(category_url[0])
         for scroll in range(10):
             SCROLL_PAUSE_TIME = 5
             driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
@@ -80,7 +134,7 @@ def parse_data(category_urls):
             full_content = BeautifulSoup(html, "lxml")
 
             class_type = ['miglog-prod miglog-sellingmethod-by_package', 'miglog-prod miglog-sellingmethod-by_weight',
-                  'miglog-prod miglog-sellingmethod-by_unit']
+                          'miglog-prod miglog-sellingmethod-by_unit']
             count = 0
             for class_ in class_type:
                 products = full_content.find_all('li', class_=class_type)
@@ -127,24 +181,27 @@ def parse_data(category_urls):
                             except AttributeError as err:
                                 supplier = 'NaN'
 
-
-                        filling_table(con, 'shufersal', 'suppliers', '(name)', supplier)
-                        filling_table(con, 'shufersal', 'products_details', '(id, name, id_supplier, id_categories)',
-                                      product_id, product_name, supplier, category_url)
-                        filling_table(con, 'shufersal', 'product_price', '(price, price_unit, container, product_id)',
-                                      price, priceUnit, container, product_id)
-
                     except AttributeError as err:
                         priceUnit = 'NaN'
                         container = 'NaN'
 
+                    products_id = get_products_id_list(user, password)
+                    if product_id not in products_id:
+                        product_count += 1
+                        suppliers = get_supplier_list(user, password)
+                        if supplier not in suppliers:
+                            filling_table(con, database_name, 'suppliers', '(supplier)', supplier)
+
+                        date_time = get_date_time()
+                        filling_table(con, database_name, 'product_price',
+                                      '(id, price, price_unit, container, date_time)',
+                                      product_count, price, priceUnit, container, date_time)
+
+                        supplier_id = get_supplier_id(supplier, user, password)
+                        filling_table(con, database_name, 'product_details',
+                                      '(id, product_id, name, id_suppliers, id_category)',
+                                      product_count, product_id, product_name, supplier_id, category_ids[url_index])
 
 
 if __name__ == '__main__':
-    U = get_urls()
-#    parse_data(U)
-
-#filling_table(con, 'shufersal', 'category', '(name, url)', product_name, price)
-#filling_table(con, 'shufersal', 'category', '(name, url)', product_name, price)
-#filling_table(con, 'shufersal', 'category', '(name, url)', product_name, price)
-#filling_table(con, 'shufersal', 'category', '(name, url)', product_name, price)
+    parse_data(sys.argv[1], sys.argv[2])
