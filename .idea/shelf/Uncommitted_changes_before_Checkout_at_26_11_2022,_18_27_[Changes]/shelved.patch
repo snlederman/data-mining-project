@@ -1,0 +1,19 @@
+Index: .idea/Data_mining_project.iml
+===================================================================
+diff --git a/.idea/Data_mining_project.iml b/.idea/Data_mining_project.iml
+--- a/.idea/Data_mining_project.iml	
++++ b/.idea/Data_mining_project.iml	
+@@ -2,7 +2,11 @@
+ <module type="PYTHON_MODULE" version="4">
+   <component name="NewModuleRootManager">
+     <content url="file://$MODULE_DIR$" />
+-    <orderEntry type="jdk" jdkName="Python 3.9 (Data_mining_project)" jdkType="Python SDK" />
++    <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
++  <component name="PyDocumentationSettings">
++    <option name="format" value="PLAIN" />
++    <option name="myDocStringFormat" value="Plain" />
++  </component>
+ </module>
+\ No newline at end of file

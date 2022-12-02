@@ -1,0 +1,148 @@
+Index: shufersal_links.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>id,Destination,Link\r\n1,Green אורגני ובריאות,https://www.shufersal.co.il/online/he/A28\r\n2,פירות וירקות,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%A4%D7%99%D7%A8%D7%95%D7%AA-%D7%95%D7%99%D7%A8%D7%A7%D7%95%D7%AA/c/A04\r\n3,מוצרי חלב וביצים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%97%D7%9C%D7%91-%D7%95%D7%91%D7%99%D7%A6%D7%99%D7%9D/c/A01\r\n4,\"בשר, עוף ודגים\",https://www.shufersal.co.il/online/he/A07\r\n5,מאפיה ולחמים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%90%D7%A4%D7%99%D7%94-%D7%95%D7%9C%D7%97%D7%9E%D7%99%D7%9D/c/A10\r\n6,\"משקאות, יין, אלכוהול וטבק\",https://www.shufersal.co.il/online/he/A13\r\n7,\"מזון מקורר, קפוא ונקניקים\",https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%96%D7%95%D7%9F-%D7%9E%D7%A7%D7%95%D7%A8%D7%A8%2C-%D7%A7%D7%A4%D7%95%D7%90%D7%99%D7%9D-%D7%95%D7%A0%D7%A7%D7%A0%D7%99%D7%A7%D7%99%D7%9D/c/A16\r\n8,בישול אפיה ושימורים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%91%D7%99%D7%A9%D7%95%D7%9C-%D7%90%D7%A4%D7%99%D7%94-%D7%95%D7%A9%D7%99%D7%9E%D7%95%D7%A8%D7%99%D7%9D/c/A22\r\n9,\"חטיפים, מתוקים ודגני בוקר\",https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%97%D7%98%D7%99%D7%A4%D7%99%D7%9D%2C-%D7%9E%D7%AA%D7%95%D7%A7%D7%99%D7%9D-%D7%95%D7%93%D7%92%D7%A0%D7%99-%D7%91%D7%95%D7%A7%D7%A8/c/A25\r\n10,פארם ותינוקות,https://www.shufersal.co.il/online/he/A31\r\n11,ניקיון וחד פעמי,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%A0%D7%99%D7%A7%D7%99%D7%95%D7%9F-%D7%94%D7%91%D7%99%D7%AA-%D7%95%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99/c/A34\r\n12,בעלי חיים,https://www.shufersal.co.il/online/he/A37\r\n13,חגיגת מותג פרטי,https://www.shufersal.co.il/online/he/A41\r\n14,חגיגת בישום וויטמינים,https://www.shufersal.co.il/online/he/B\r\n15,חדש באתר,https://www.shufersal.co.il/online/he/A91\r\n16,בישום,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%91%D7%99%D7%A9%D7%95%D7%9D/c/B12\r\n17,איפור,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%90%D7%99%D7%A4%D7%95%D7%A8-/c/B02\r\n18,טיפוח הגוף והשיער,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%98%D7%99%D7%A4%D7%95%D7%97-%D7%94%D7%92%D7%95%D7%A3-%D7%95%D7%94%D7%A9%D7%99%D7%A2%D7%A8/c/B03\r\n19,ויטמינים ותוספי תזונה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%95%D7%99%D7%98%D7%9E%D7%99%D7%A0%D7%99%D7%9D-%D7%95%D7%AA%D7%95%D7%A1%D7%A4%D7%99-%D7%AA%D7%96%D7%95%D7%A0%D7%94/c/B06\r\n20,בית מרקחת ואופטיקה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%91%D7%99%D7%AA-%D7%9E%D7%A8%D7%A7%D7%97%D7%AA-%D7%95%D7%90%D7%95%D7%A4%D7%98%D7%99%D7%A7%D7%94/c/B07\r\n21,רחצה והגיינה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%A8%D7%97%D7%A6%D7%94-%D7%95%D7%94%D7%92%D7%99%D7%99%D7%A0%D7%94/c/B04\r\n22,גברים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%92%D7%91%D7%A8%D7%99%D7%9D/c/B05\r\n23,תינוקות וילדים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%AA%D7%99%D7%A0%D7%95%D7%A7%D7%95%D7%AA-%D7%95%D7%99%D7%9C%D7%93%D7%99%D7%9D/c/B08\r\n24,OUTLET,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/OUTLET/Outlet/OUTLET/c/B100101\r\n25,מותגים,https://www.shufersal.co.il/online/he/BeAllbrands\r\n26,Best Sellers,https://www.shufersal.co.il/online/he/G91\r\n27,אלקטרוניקה וסלולר,https://www.shufersal.co.il/online/he/G03\r\n28,חשמל לבית,https://www.shufersal.co.il/online/he/G01\r\n29,חשמל למטבח,https://www.shufersal.co.il/online/he/G02\r\n30,\"מטבח, אירוח וחד פעמי\",https://www.shufersal.co.il/online/he/G14\r\n31,גינה וחוץ,https://www.shufersal.co.il/online/he/G15\r\n32,סלון ואווירה,https://www.shufersal.co.il/online/he/G18\r\n33,חדר שינה,https://www.shufersal.co.il/online/he/G17\r\n34,אמבטיה וחדר כביסה,https://www.shufersal.co.il/online/he/G19\r\n35,DIY ולמשרד,https://www.shufersal.co.il/online/he/G20\r\n36,GALA HOME,https://www.shufersal.co.il/online/he/G13\r\n37,מותגים מובילים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%94%D7%A7%D7%A0%D7%99%D7%95%D7%9F-%D7%94%D7%9B%D7%9C-%D7%9C%D7%91%D7%99%D7%AA/%D7%9E%D7%95%D7%AA%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%91%D7%99%D7%9C%D7%99%D7%9D/c/G30\r\n38,שופרסל Online אילת,https://www.eilat.shufersal.co.il/\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/shufersal_links.csv b/shufersal_links.csv
+--- a/shufersal_links.csv	(revision 01a22d5f00f85c76332a9ca186d3a43c7bc0ca1e)
++++ b/shufersal_links.csv	(date 1669484038701)
+@@ -1,39 +1,25 @@
+ id,Destination,Link
+-1,Green אורגני ובריאות,https://www.shufersal.co.il/online/he/A28
+-2,פירות וירקות,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%A4%D7%99%D7%A8%D7%95%D7%AA-%D7%95%D7%99%D7%A8%D7%A7%D7%95%D7%AA/c/A04
+-3,מוצרי חלב וביצים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%97%D7%9C%D7%91-%D7%95%D7%91%D7%99%D7%A6%D7%99%D7%9D/c/A01
+-4,"בשר, עוף ודגים",https://www.shufersal.co.il/online/he/A07
+-5,מאפיה ולחמים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%90%D7%A4%D7%99%D7%94-%D7%95%D7%9C%D7%97%D7%9E%D7%99%D7%9D/c/A10
+-6,"משקאות, יין, אלכוהול וטבק",https://www.shufersal.co.il/online/he/A13
+-7,"מזון מקורר, קפוא ונקניקים",https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%96%D7%95%D7%9F-%D7%9E%D7%A7%D7%95%D7%A8%D7%A8%2C-%D7%A7%D7%A4%D7%95%D7%90%D7%99%D7%9D-%D7%95%D7%A0%D7%A7%D7%A0%D7%99%D7%A7%D7%99%D7%9D/c/A16
+-8,בישול אפיה ושימורים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%91%D7%99%D7%A9%D7%95%D7%9C-%D7%90%D7%A4%D7%99%D7%94-%D7%95%D7%A9%D7%99%D7%9E%D7%95%D7%A8%D7%99%D7%9D/c/A22
+-9,"חטיפים, מתוקים ודגני בוקר",https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%97%D7%98%D7%99%D7%A4%D7%99%D7%9D%2C-%D7%9E%D7%AA%D7%95%D7%A7%D7%99%D7%9D-%D7%95%D7%93%D7%92%D7%A0%D7%99-%D7%91%D7%95%D7%A7%D7%A8/c/A25
+-10,פארם ותינוקות,https://www.shufersal.co.il/online/he/A31
+-11,ניקיון וחד פעמי,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%A0%D7%99%D7%A7%D7%99%D7%95%D7%9F-%D7%94%D7%91%D7%99%D7%AA-%D7%95%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99/c/A34
+-12,בעלי חיים,https://www.shufersal.co.il/online/he/A37
+-13,חגיגת מותג פרטי,https://www.shufersal.co.il/online/he/A41
+-14,חגיגת בישום וויטמינים,https://www.shufersal.co.il/online/he/B
+-15,חדש באתר,https://www.shufersal.co.il/online/he/A91
+-16,בישום,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%91%D7%99%D7%A9%D7%95%D7%9D/c/B12
+-17,איפור,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%90%D7%99%D7%A4%D7%95%D7%A8-/c/B02
+-18,טיפוח הגוף והשיער,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%98%D7%99%D7%A4%D7%95%D7%97-%D7%94%D7%92%D7%95%D7%A3-%D7%95%D7%94%D7%A9%D7%99%D7%A2%D7%A8/c/B03
+-19,ויטמינים ותוספי תזונה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%95%D7%99%D7%98%D7%9E%D7%99%D7%A0%D7%99%D7%9D-%D7%95%D7%AA%D7%95%D7%A1%D7%A4%D7%99-%D7%AA%D7%96%D7%95%D7%A0%D7%94/c/B06
+-20,בית מרקחת ואופטיקה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%91%D7%99%D7%AA-%D7%9E%D7%A8%D7%A7%D7%97%D7%AA-%D7%95%D7%90%D7%95%D7%A4%D7%98%D7%99%D7%A7%D7%94/c/B07
+-21,רחצה והגיינה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%A8%D7%97%D7%A6%D7%94-%D7%95%D7%94%D7%92%D7%99%D7%99%D7%A0%D7%94/c/B04
+-22,גברים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%92%D7%91%D7%A8%D7%99%D7%9D/c/B05
+-23,תינוקות וילדים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%AA%D7%99%D7%A0%D7%95%D7%A7%D7%95%D7%AA-%D7%95%D7%99%D7%9C%D7%93%D7%99%D7%9D/c/B08
+-24,OUTLET,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/OUTLET/Outlet/OUTLET/c/B100101
+-25,מותגים,https://www.shufersal.co.il/online/he/BeAllbrands
+-26,Best Sellers,https://www.shufersal.co.il/online/he/G91
+-27,אלקטרוניקה וסלולר,https://www.shufersal.co.il/online/he/G03
+-28,חשמל לבית,https://www.shufersal.co.il/online/he/G01
+-29,חשמל למטבח,https://www.shufersal.co.il/online/he/G02
+-30,"מטבח, אירוח וחד פעמי",https://www.shufersal.co.il/online/he/G14
+-31,גינה וחוץ,https://www.shufersal.co.il/online/he/G15
+-32,סלון ואווירה,https://www.shufersal.co.il/online/he/G18
+-33,חדר שינה,https://www.shufersal.co.il/online/he/G17
+-34,אמבטיה וחדר כביסה,https://www.shufersal.co.il/online/he/G19
+-35,DIY ולמשרד,https://www.shufersal.co.il/online/he/G20
+-36,GALA HOME,https://www.shufersal.co.il/online/he/G13
+-37,מותגים מובילים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%94%D7%A7%D7%A0%D7%99%D7%95%D7%9F-%D7%94%D7%9B%D7%9C-%D7%9C%D7%91%D7%99%D7%AA/%D7%9E%D7%95%D7%AA%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%91%D7%99%D7%9C%D7%99%D7%9D/c/G30
+-38,שופרסל Online אילת,https://www.eilat.shufersal.co.il/
++1,BLACK FRIDAY,https://www.shufersal.co.il/online/he/G89
++2,Green אורגני ובריאות,https://www.shufersal.co.il/online/he/A28
++3,פירות וירקות,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%A4%D7%99%D7%A8%D7%95%D7%AA-%D7%95%D7%99%D7%A8%D7%A7%D7%95%D7%AA/c/A04
++4,מוצרי חלב וביצים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%97%D7%9C%D7%91-%D7%95%D7%91%D7%99%D7%A6%D7%99%D7%9D/c/A01
++5,"בשר, עוף ודגים",https://www.shufersal.co.il/online/he/A07
++6,מאפיה ולחמים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%90%D7%A4%D7%99%D7%94-%D7%95%D7%9C%D7%97%D7%9E%D7%99%D7%9D/c/A10
++7,"משקאות, יין, אלכוהול וטבק",https://www.shufersal.co.il/online/he/A13
++8,"מזון מקורר, קפוא ונקניקים",https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%96%D7%95%D7%9F-%D7%9E%D7%A7%D7%95%D7%A8%D7%A8%2C-%D7%A7%D7%A4%D7%95%D7%90%D7%99%D7%9D-%D7%95%D7%A0%D7%A7%D7%A0%D7%99%D7%A7%D7%99%D7%9D/c/A16
++9,בישול אפיה ושימורים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%91%D7%99%D7%A9%D7%95%D7%9C-%D7%90%D7%A4%D7%99%D7%94-%D7%95%D7%A9%D7%99%D7%9E%D7%95%D7%A8%D7%99%D7%9D/c/A22
++10,"חטיפים, מתוקים ודגני בוקר",https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%97%D7%98%D7%99%D7%A4%D7%99%D7%9D%2C-%D7%9E%D7%AA%D7%95%D7%A7%D7%99%D7%9D-%D7%95%D7%93%D7%92%D7%A0%D7%99-%D7%91%D7%95%D7%A7%D7%A8/c/A25
++11,פארם ותינוקות,https://www.shufersal.co.il/online/he/A31
++12,ניקיון וחד פעמי,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%A0%D7%99%D7%A7%D7%99%D7%95%D7%9F-%D7%94%D7%91%D7%99%D7%AA-%D7%95%D7%97%D7%93-%D7%A4%D7%A2%D7%9E%D7%99/c/A34
++13,בעלי חיים,https://www.shufersal.co.il/online/he/A37
++14,חדש באתר,https://www.shufersal.co.il/online/he/A91
++15,בישום,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%91%D7%99%D7%A9%D7%95%D7%9D/c/B12
++16,איפור,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%90%D7%99%D7%A4%D7%95%D7%A8-/c/B02
++17,טיפוח הגוף והשיער,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%98%D7%99%D7%A4%D7%95%D7%97-%D7%94%D7%92%D7%95%D7%A3-%D7%95%D7%94%D7%A9%D7%99%D7%A2%D7%A8/c/B03
++18,ויטמינים ותוספי תזונה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%95%D7%99%D7%98%D7%9E%D7%99%D7%A0%D7%99%D7%9D-%D7%95%D7%AA%D7%95%D7%A1%D7%A4%D7%99-%D7%AA%D7%96%D7%95%D7%A0%D7%94/c/B06
++19,בית מרקחת ואופטיקה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%91%D7%99%D7%AA-%D7%9E%D7%A8%D7%A7%D7%97%D7%AA-%D7%95%D7%90%D7%95%D7%A4%D7%98%D7%99%D7%A7%D7%94/c/B07
++20,רחצה והגיינה,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%A8%D7%97%D7%A6%D7%94-%D7%95%D7%94%D7%92%D7%99%D7%99%D7%A0%D7%94/c/B04
++21,גברים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%92%D7%91%D7%A8%D7%99%D7%9D/c/B05
++22,תינוקות וילדים,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/%D7%AA%D7%99%D7%A0%D7%95%D7%A7%D7%95%D7%AA-%D7%95%D7%99%D7%9C%D7%93%D7%99%D7%9D/c/B08
++23,OUTLET,https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A4%D7%90%D7%A8%D7%9D-%D7%95%D7%A7%D7%95%D7%A1%D7%9E%D7%98%D7%99%D7%A7%D7%94-/OUTLET/Outlet/OUTLET/c/B100101
++24,מותגים,https://www.shufersal.co.il/online/he/BeAllbrands
+Index: Getting_links.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"\nThe script extracts all relevant urls addresses from the online supermarket of \"shufersal\"\n\"\"\"\n\nimport requests\nfrom bs4 import BeautifulSoup\nimport csv\nMAIN_URL = 'https://www.shufersal.co.il/online/he/S'\n\n\ndef from_url_to_soup(url_address):\n    \"\"\"\n     from_url_to_soup gets an url address and returns it html content using BeautifulSoup4\n\n    :param url_address:  url address string\n    :return: soup - class 'bs4.BeautifulSoup'\n    \"\"\"\n    r = requests.get(url_address)\n    soup = BeautifulSoup(r.content, \"html.parser\")\n    return soup\n\ndef main():\n    \"\"\"\n    main runs a search through Shufersal online main header and returns all the links to it sub categories\n    and the name of the categories (in hebrew). all the data is stored in shufersal_links.csv\n    \"\"\"\n\n    csv_file = open('shufersal_links.csv', 'w')\n    csv_writer = csv.writer(csv_file)\n    csv_writer.writerow(['id', 'Destination', 'Link'])\n\n    full_content = from_url_to_soup(MAIN_URL)\n    sub_panels = full_content.find_all('li', class_=\"second-level-li panel\")\n\n    count = 0\n    label_list = []\n    for sub_panel in sub_panels:\n        label = sub_panel.a.text.strip()\n        if label in label_list:\n            break\n        else:\n            label_list.append(label)\n            link = sub_panel.a.get('href')\n            if link[1:7] == 'online':\n                link = 'https://www.shufersal.co.il' + link\n            count += 1\n            csv_writer.writerow([count, label, link])\n            print(\"_______________________________________\")\n            print(label)\n            print(link)\n\n    csv_file.close()\n\n    if count <= 20:\n        raise Exception(f\" only {count} links were scraped, please check the script/file/site...\")\n    else:\n        print(f\"{count} links were scraped.\")\n\n\nif __name__ == '__main__':\n    main()\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Getting_links.py b/Getting_links.py
+--- a/Getting_links.py	(revision 01a22d5f00f85c76332a9ca186d3a43c7bc0ca1e)
++++ b/Getting_links.py	(date 1669490112357)
+@@ -6,11 +6,12 @@
+ from bs4 import BeautifulSoup
+ import csv
+ MAIN_URL = 'https://www.shufersal.co.il/online/he/S'
++MINIMUM_NUMBER_OF_LINKS = 20
+ 
+ 
+ def from_url_to_soup(url_address):
+     """
+-     from_url_to_soup gets an url address and returns it html content using BeautifulSoup4
++     get_soup_from_url gets an url address and returns it html content using BeautifulSoup4
+ 
+     :param url_address:  url address string
+     :return: soup - class 'bs4.BeautifulSoup'
+@@ -25,15 +26,17 @@
+     and the name of the categories (in hebrew). all the data is stored in shufersal_links.csv
+     """
+ 
+-    csv_file = open('shufersal_links.csv', 'w')
+-    csv_writer = csv.writer(csv_file)
+-    csv_writer.writerow(['id', 'Destination', 'Link'])
++    # csv_file = open('shufersal_links.csv', 'w')
++    # csv_writer = csv.writer(csv_file)
++    # csv_writer.writerow(['id', 'Destination', 'Link'])
+ 
+     full_content = from_url_to_soup(MAIN_URL)
+     sub_panels = full_content.find_all('li', class_="second-level-li panel")
+ 
+     count = 0
+     label_list = []
++    links_list = []
++    category_list = []
+     for sub_panel in sub_panels:
+         label = sub_panel.a.text.strip()
+         if label in label_list:
+@@ -44,17 +47,23 @@
+             if link[1:7] == 'online':
+                 link = 'https://www.shufersal.co.il' + link
+             count += 1
++            links_list.append(link)
++            category_list.append(label)
+             csv_writer.writerow([count, label, link])
+-            print("_______________________________________")
+-            print(label)
+-            print(link)
++
++
++
++
++
+ 
+     csv_file.close()
+ 
+-    if count <= 20:
++    if count <= MINIMUM_NUMBER_OF_LINKS:
+         raise Exception(f" only {count} links were scraped, please check the script/file/site...")
+     else:
+-        print(f"{count} links were scraped.")
++        print(f"{len(links_list)} categories and their links were scraped.")
++
++    return links_list, category_list
+ 
+ 
+ if __name__ == '__main__':
