@@ -33,10 +33,11 @@ def main():
 
     parser.add_argument('user', help='user name to mySQL data server')
     parser.add_argument('password', help='password to mySQL data server')
-    parser.add_argument('-url',
-                        help='specific category url from the "Shufersal" online site to parse and collect to the Shufersal database')
+    parser.add_argument('-url', help='specific category url from the "Shufersal" '
+                                     'online site to parse and collect to the Shufersal database')
     parser.add_argument('-gl', action='store_true', help='get subcategories links to parse and fill category table')
-    parser.add_argument('-all', action='store_true', help='get all links from category table, parse and fill "Shufersal" database')
+    parser.add_argument('-all', action='store_true', help='get all links from category table, parse and fill '
+                                                          '"Shufersal" database')
     parser.add_argument('-c', action='store_true', help='create "Shufersal" database')
     parser.add_argument('-dc', action='store_true', help='delete existing "Shufersal" database and creating a new one')
     parser.add_argument('-d', action='store_true', help='delete "Shufersal" database')
