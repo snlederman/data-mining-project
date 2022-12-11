@@ -17,6 +17,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from database import connection
 from database import filling_table
+from google_translate_api import translate_text
 
 BASE_URL = 'https://www.shufersal.co.il/online/he/s'
 MAIN_URL = 'https://www.shufersal.co.il'
@@ -24,6 +25,7 @@ LENGTH_GENERAL_URL = len(MAIN_URL)
 RANGE_LIST = [(3, 15), (2, 10), (4, 15)]
 MINIMUM_NUMBER_OF_LINKS = 20
 database_name = 'shufersal'
+
 
 def from_url_to_soup(url_address):
     """
@@ -36,9 +38,11 @@ def from_url_to_soup(url_address):
     soup = BeautifulSoup(r.content, "html.parser")
     return soup
 
+
 def create_connection(user_name, user_password):
     connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=database_name)
     return connection
+
 
 def sql_queary(query, connection):
     """
@@ -49,6 +53,7 @@ def sql_queary(query, connection):
             cursor.execute(query)
             result = cursor.fetchall()
         return result
+
 
 def get_categories_links(user, password):
     connect = create_connection(user, password)
@@ -72,15 +77,15 @@ def get_urls(user, password):
     fill_count = 0
 
     for i in range(len(RANGE_LIST)):
-        ELEMENT = driver.find_element(By.XPATH,
+        element = driver.find_element(By.XPATH,
                                       f'/ html / body / main / header / div[2] / nav / div / ul[1] / li[{i + 2}]')
-        action.move_to_element(ELEMENT).perform()
+        action.move_to_element(element).perform()
         time.sleep(1)
         elements = RANGE_LIST[i]
 
         for j in range(*elements):
-            ELEMENT = driver.find_element(By.XPATH, f'// *[ @ id = "secondMenu{i + 2}"] / li[{j}]')
-            action.move_to_element(ELEMENT).perform()
+            element = driver.find_element(By.XPATH, f'// *[ @ id = "secondMenu{i + 2}"] / li[{j}]')
+            action.move_to_element(element).perform()
             html = driver.page_source
             soup = BeautifulSoup(html, "lxml")
             menu_elements = soup.find_all('ul', class_="thirdMenu")

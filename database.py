@@ -17,7 +17,8 @@ def connection(user, password):
 
 
 def create_database(con, name):
-    """'create_database' get a pymysql.connection.connection attribute and a name and creates an sql database, called by the name input"""
+    """'create_database' get a pymysql.connection.connection attribute
+    and a name and creates an sql database, called by the name input"""
 
     try:
         with con.cursor() as cursor:
@@ -30,8 +31,8 @@ def create_database(con, name):
 
 def create_table(con, database, name, *args):
     """'attribute' get a pymysql.connection.connection attribute,
-    name of a database, name of a new table and
-    a list of arguments containing an sql code to implement on the new table"""
+    name of a database, name of a new table and a list of arguments
+    containing an sql code to implement on the new table"""
 
     with con.cursor() as cursor:
         select_database = f'USE {database}'

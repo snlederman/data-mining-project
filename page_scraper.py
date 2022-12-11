@@ -21,7 +21,7 @@ from database import connection
 from database import filling_table
 from getting_shufersal_links import get_urls
 
-## main url
+# main url
 MAIN_URL = 'https://www.shufersal.co.il/online/he/S'
 general_url = 'https://www.shufersal.co.il'
 LENGTH_GENERAL_URL = len(general_url)
@@ -34,11 +34,13 @@ def create_connection(user_name, user_password):
     connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=database_name)
     return connection
 
+
 def get_categories_links(user, password):
     connect = create_connection(user, password)
     categories_link_list_query = f"SELECT url FROM category;"
     categories_link = sql_queary(categories_link_list_query, connect)
     return list(map(lambda x: x[0], categories_link))
+
 
 def sql_queary(query, connection):
     """
@@ -141,7 +143,8 @@ def parse_data(user, password, *args):
             full_content = BeautifulSoup(html, "lxml")
 
             class_type = ['miglog-prod miglog-sellingmethod-by_package', 'miglog-prod miglog-sellingmethod-by_weight',
-                          'miglog-prod miglog-sellingmethod-by_unit', 'tile miglog-prod-inStock notOverlay ui-draggable ui-draggable-handle']
+                          'miglog-prod miglog-sellingmethod-by_unit', 'tile miglog-prod-inStock notOverlay ui-draggable'
+                                                                      ' ui-draggable-handle']
 
             for class_ in class_type:
                 products = full_content.find_all('li', class_=class_type)
@@ -208,7 +211,9 @@ def parse_data(user, password, *args):
                         filling_table(con, database_name, 'product_details',
                                       '(id, product_id, name, id_suppliers, id_category)',
                                       product_id_count, product_id, product_name, supplier_id, category_ids[url_index])
-
+        driver.close()
         print(f"{count} products were scraped from category in index {category_ids[url_index]} ")
+
+
 if __name__ == '__main__':
     parse_data(sys.argv[1], sys.argv[2])
