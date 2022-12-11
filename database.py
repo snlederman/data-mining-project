@@ -6,7 +6,7 @@ from common import connection
 from common import read_from_config
 
 DATABASE_NAME = read_from_config("DATABASE_NAME")
-
+TARGET_TRANS = read_from_config("TARGET_TRANS")
 
 def create_database(con, name):
     """'create_database' get a pymysql.connection.connection attribute
@@ -75,11 +75,11 @@ def main(user, password):
     suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'supplier VARCHAR(45)'
     create_table(connect, DATABASE_NAME, 'suppliers', *suppliers_table_data)
 
-    product_price_data = 'id INT PRIMARY KEY', 'price INT', 'price_unit VARCHAR(45)', \
+    product_price_data = 'id INT PRIMARY KEY', 'price_ILS FLOAT', 'price_USD FLOAT', 'price_unit VARCHAR(45)', \
                          'container VARCHAR(45)', 'date_time DATETIME'
     create_table(connect, DATABASE_NAME, 'product_price', *product_price_data)
 
-    product_details_data = 'id INT PRIMARY KEY', 'product_id VARCHAR(20)', 'name VARCHAR(200)', \
+    product_details_data = 'id INT PRIMARY KEY', 'product_id VARCHAR(20)', 'name VARCHAR(200)', f'trans_to_{TARGET_TRANS} VARCHAR(200)', \
                            'id_suppliers INT', 'id_category INT', \
                            'FOREIGN KEY (id_suppliers) REFERENCES suppliers(id)', \
                            'FOREIGN KEY (id_category) REFERENCES category(id)', \

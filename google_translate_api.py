@@ -10,4 +10,5 @@ def translate_text(text):
     translation = translator.translate(text, dest=TARGET)
     print(translation.text)
 
+
 translate_text('Hola mundo')

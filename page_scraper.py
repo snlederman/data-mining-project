@@ -13,6 +13,7 @@ import sys
 import json
 from bs4 import BeautifulSoup
 import pymysql
+import requests
 
 # ____selenium____
 from selenium import webdriver
@@ -20,12 +21,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-
 # ____internal modules____
+import common
 from common import read_from_config
 from common import connection
 from common import filling_table
-
 
 MAIN_URL = read_from_config("MAIN_URL")
 GENERAL_URL = read_from_config("GENERAL_URL")
@@ -33,6 +33,8 @@ LENGTH_GENERAL_URL = len(GENERAL_URL)
 RANGE_LIST = read_from_config("RANGE_LIST")
 CATEGORIES = len(RANGE_LIST)
 DATABASE_NAME = read_from_config("DATABASE_NAME")
+EXCHANGE_RATE_HEADERS = read_from_config("EXCHANGE_RATE_HEADERS")
+TARGET_TRANS = read_from_config("TARGET_TRANS")
 
 
 def create_connection(user_name, user_password):
@@ -124,6 +126,17 @@ def get_product_count(user, password):
     return count[0][0]
 
 
+def exchange_rate(amount):
+    try:
+        url = f"https://api.apilayer.com/exchangerates_data/convert?to=USD&from=ILS&amount={amount}"
+        response = requests.request("GET", url, headers=EXCHANGE_RATE_HEADERS)
+        data = response.json()
+        er = data['result']
+    except KeyError:
+        return 0
+    return er
+
+
 def parse_data(user, password, *args):
     con = create_connection(user, password)
     if args:
@@ -161,13 +174,22 @@ def parse_data(user, password, *args):
 
                     try:
                         product_name = product.find('div', class_='text description').strong.text
+                        try:
+                            name_trans = common.translate_text(product_name)
+                        except AttributeError:
+                            name_trans = 'NaN'
+
                     except AttributeError as err:
                         product_name = 'NaN'
+                        name_trans = 'NaN'
 
                     try:
                         price = product.find('span', class_='price').span.text
+                        price_USD = exchange_rate(price)
+
                     except AttributeError as err:
                         price = 'NaN'
+                        price_USD = 'NaN'
 
                     try:
                         priceUnit = product.find('span', class_='priceUnit').text
@@ -208,13 +230,14 @@ def parse_data(user, password, *args):
 
                         date_time = get_date_time()
                         filling_table(con, DATABASE_NAME, 'product_price',
-                                      '(id, price, price_unit, container, date_time)',
-                                      product_id_count, price, priceUnit, container, date_time)
+                                      '(id, price_ILS, price_USD, price_unit, container, date_time)',
+                                      product_id_count, price, price_USD, priceUnit, container, date_time)
 
                         supplier_id = get_supplier_id(supplier, user, password)
                         filling_table(con, DATABASE_NAME, 'product_details',
-                                      '(id, product_id, name, id_suppliers, id_category)',
-                                      product_id_count, product_id, product_name, supplier_id, category_ids[url_index])
+                                      f'(id, product_id, name, trans_to_{TARGET_TRANS}, id_suppliers, id_category)',
+                                      product_id_count, product_id, product_name, name_trans, supplier_id,
+                                      category_ids[url_index])
 
         print(f"{count} products were scraped from category in index {category_ids[url_index]} ")
     driver.close()

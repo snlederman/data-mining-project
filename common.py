@@ -1,5 +1,6 @@
 import json
 import pymysql
+from googletrans import Translator
 
 
 def read_from_config(key):
@@ -52,3 +53,12 @@ def filling_table(con, database, table, variables, *data):
         fill_table = f"REPLACE INTO {table} {variables} VALUES ({values})"
         cursor.execute(fill_table, [*data])
         con.commit()
+
+def translate_text(text):
+    """Translates text into the target language.
+    """
+    TARGET_TRANS = read_from_config('TARGET_TRANS')
+    translator = Translator()
+    translation = translator.translate(text, dest=TARGET_TRANS)
+    return translation.text
+
