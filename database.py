@@ -1,19 +1,11 @@
 import pymysql
 import sys
 
+# ____internal modules____
+from common import connection
+from common import read_from_config
 
-def connection(user, password):
-    """'connection' gets a user and a password to MySQL Server
-    and returns a pymysql.connection.connection attribute"""
-
-    try:
-        connect = pymysql.connect(host='localhost',
-                                  user=user,
-                                  password=password,
-                                  cursorclass=pymysql.cursors.DictCursor)
-    except RuntimeError as err:
-        print(f'{err}')
-    return connect
+DATABASE_NAME = read_from_config("DATABASE_NAME")
 
 
 def create_database(con, name):
@@ -29,6 +21,20 @@ def create_database(con, name):
         raise pymysql.err.ProgrammingError
 
 
+def check_database(user, password, database):
+    """ checks if the database exist, returns true if it is and false if it doesn't"""
+    con = connection(user, password)
+
+    with con.cursor() as cursor:
+        try:
+            check_database_sql = f"USE {database};"
+            cursor.execute(check_database_sql)
+            return True
+        except pymysql.err.OperationalError:
+            print(f"Database '{database}' doesn't exist, create database using -c argument to initialize the Shufersal scraper.")
+            return False
+
+
 def create_table(con, database, name, *args):
     """'attribute' get a pymysql.connection.connection attribute,
     name of a database, name of a new table and a list of arguments
@@ -40,22 +46,6 @@ def create_table(con, database, name, *args):
         content = str(args).replace("'", "")
         table = f'CREATE TABLE {name} {content}'
         cursor.execute(table)
-
-
-def filling_table(con, database, table, variables, *data):
-    """'filling_table' get a pymysql.connection.connection attribute,
-    name of a database, name of a table, string of variables and a list of data
-    and add it to the table """
-
-    with con.cursor() as cursor:
-        select_database = f"USE {database}"
-        cursor.execute(select_database)
-        variables = variables.replace("'", "")
-        values = len(data) * '%s, '
-        values = values.rstrip(", ")
-        fill_table = f"REPLACE INTO {table} {variables} VALUES ({values})"
-        cursor.execute(fill_table, [*data])
-        con.commit()
 
 
 def delete_database(user, password, database):
@@ -74,21 +64,20 @@ def main(user, password):
     """
 
     connect = connection(user, password)
-    database_name = 'shufersal'
 
     try:
-        create_database(connect, database_name)
+        create_database(connect, DATABASE_NAME)
     except pymysql.err.ProgrammingError as e:
         raise pymysql.err.ProgrammingError
     category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'category VARCHAR(45)', 'url VARCHAR(500)'
-    create_table(connect, database_name, 'category', *category_table_data)
+    create_table(connect, DATABASE_NAME, 'category', *category_table_data)
 
     suppliers_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'supplier VARCHAR(45)'
-    create_table(connect, database_name, 'suppliers', *suppliers_table_data)
+    create_table(connect, DATABASE_NAME, 'suppliers', *suppliers_table_data)
 
     product_price_data = 'id INT PRIMARY KEY', 'price INT', 'price_unit VARCHAR(45)', \
                          'container VARCHAR(45)', 'date_time DATETIME'
-    create_table(connect, database_name, 'product_price', *product_price_data)
+    create_table(connect, DATABASE_NAME, 'product_price', *product_price_data)
 
     product_details_data = 'id INT PRIMARY KEY', 'product_id VARCHAR(20)', 'name VARCHAR(200)', \
                            'id_suppliers INT', 'id_category INT', \
@@ -96,7 +85,7 @@ def main(user, password):
                            'FOREIGN KEY (id_category) REFERENCES category(id)', \
                            'FOREIGN KEY (id) REFERENCES product_price(id)'
 
-    create_table(connect, database_name, 'product_details', *product_details_data)
+    create_table(connect, DATABASE_NAME, 'product_details', *product_details_data)
 
     with connect.cursor() as cursor:
         FOREIGN_KEY_CHECKS = 'SET FOREIGN_KEY_CHECKS = 0;'

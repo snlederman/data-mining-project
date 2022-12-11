@@ -10,29 +10,34 @@ the following attributes for each product in that category:
 import datetime
 import time
 import sys
+import json
 from bs4 import BeautifulSoup
 import pymysql
+
 # ____selenium____
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from database import connection
-from database import filling_table
-from getting_shufersal_links import get_urls
 
-# main url
-MAIN_URL = 'https://www.shufersal.co.il/online/he/S'
-general_url = 'https://www.shufersal.co.il'
-LENGTH_GENERAL_URL = len(general_url)
-range_list = [(3, 15), (2, 10), (4, 15)]
-categories = len(range_list)
-database_name = 'shufersal'
+
+# ____internal modules____
+from common import read_from_config
+from common import connection
+from common import filling_table
+
+
+MAIN_URL = read_from_config("MAIN_URL")
+GENERAL_URL = read_from_config("GENERAL_URL")
+LENGTH_GENERAL_URL = len(GENERAL_URL)
+RANGE_LIST = read_from_config("RANGE_LIST")
+CATEGORIES = len(RANGE_LIST)
+DATABASE_NAME = read_from_config("DATABASE_NAME")
 
 
 def create_connection(user_name, user_password):
-    connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=database_name)
-    return connection
+    conn = pymysql.connect(host='localhost', user=user_name, password=user_password, database=DATABASE_NAME)
+    return conn
 
 
 def get_categories_links(user, password):
@@ -65,11 +70,11 @@ def get_category_urls(user, password):
     return links, category_id
 
 
-def get_supplier_id(supplier, user, password):
+def get_supplier_id(supplier_name, user, password):
     try:
         connect = create_connection(user, password)
-        supplier = supplier.replace('"', '""')
-        supplier_id_query = f'SELECT id FROM suppliers WHERE supplier = "{supplier}";'
+        supplier_name = supplier_name.replace('"', '""')
+        supplier_id_query = f'SELECT id FROM suppliers WHERE supplier = "{supplier_name}";'
         supplier_id = sql_queary(supplier_id_query, connect)
 
     except pymysql.err.ProgrammingError:
@@ -120,7 +125,6 @@ def get_product_count(user, password):
 
 
 def parse_data(user, password, *args):
-
     con = create_connection(user, password)
     if args:
         category_urls, category_ids = fill_url_get_id(user, password, args[0])
@@ -200,19 +204,20 @@ def parse_data(user, password, *args):
                         product_id_count += 1
                         suppliers = get_supplier_list(user, password)
                         if supplier not in suppliers:
-                            filling_table(con, database_name, 'suppliers', '(supplier)', supplier)
+                            filling_table(con, DATABASE_NAME, 'suppliers', '(supplier)', supplier)
 
                         date_time = get_date_time()
-                        filling_table(con, database_name, 'product_price',
+                        filling_table(con, DATABASE_NAME, 'product_price',
                                       '(id, price, price_unit, container, date_time)',
                                       product_id_count, price, priceUnit, container, date_time)
 
                         supplier_id = get_supplier_id(supplier, user, password)
-                        filling_table(con, database_name, 'product_details',
+                        filling_table(con, DATABASE_NAME, 'product_details',
                                       '(id, product_id, name, id_suppliers, id_category)',
                                       product_id_count, product_id, product_name, supplier_id, category_ids[url_index])
-        driver.close()
+
         print(f"{count} products were scraped from category in index {category_ids[url_index]} ")
+    driver.close()
 
 
 if __name__ == '__main__':

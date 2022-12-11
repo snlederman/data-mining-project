@@ -1,13 +1,12 @@
 """
 The script extracts all relevant urls addresses from the online supermarket of "shufersal"
 """
-
+import sys
 import time
-
 import pymysql
 from bs4 import BeautifulSoup
 import requests
-import sys
+
 # ____selenium____
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -15,16 +14,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from database import connection
-from database import filling_table
-from google_translate_api import translate_text
 
-BASE_URL = 'https://www.shufersal.co.il/online/he/s'
-MAIN_URL = 'https://www.shufersal.co.il'
-LENGTH_GENERAL_URL = len(MAIN_URL)
-RANGE_LIST = [(3, 15), (2, 10), (4, 15)]
-MINIMUM_NUMBER_OF_LINKS = 20
-database_name = 'shufersal'
+# ____internal modules____
+from common import read_from_config
+from common import connection
+from common import filling_table
+
+MAIN_URL = read_from_config("MAIN_URL")
+GENERAL_URL = read_from_config("GENERAL_URL")
+LENGTH_GENERAL_URL = len(GENERAL_URL)
+RANGE_LIST = read_from_config("RANGE_LIST")
+MINIMUM_NUMBER_OF_LINKS = read_from_config("MINIMUM_NUMBER_OF_LINKS")
+DATABASE_NAME = read_from_config("DATABASE_NAME")
 
 
 def from_url_to_soup(url_address):
@@ -40,7 +41,7 @@ def from_url_to_soup(url_address):
 
 
 def create_connection(user_name, user_password):
-    connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=database_name)
+    connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=DATABASE_NAME)
     return connection
 
 
@@ -62,6 +63,15 @@ def get_categories_links(user, password):
     return list(map(lambda x: x[0], categories_link))
 
 
+def check_urls(user, password):
+    urls = get_categories_links(user, password)
+    urls_len = len(urls)
+    if urls_len == 0:
+        print("No links were found in the category table to parse. \nUse -gl argument to get subcategories links or "
+              "-url argument for parsing a specific category url.")
+    return len(urls)
+
+
 def get_urls(user, password):
     """
     get_urls runs a search through Shufersal online main header and returns all the links to it sub categories
@@ -71,7 +81,7 @@ def get_urls(user, password):
     options = Options()
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.maximize_window()
-    driver.get(BASE_URL)
+    driver.get(MAIN_URL)
     action = ActionChains(driver)
     category_urls = dict()
     fill_count = 0
@@ -96,8 +106,8 @@ def get_urls(user, password):
                     url = category_element.find("a")["href"]
                     category_url = url
                     if url[1:7] == 'online':
-                        category_url = MAIN_URL + url
-                    if category_url[:LENGTH_GENERAL_URL] == MAIN_URL:
+                        category_url = GENERAL_URL + url
+                    if category_url[:LENGTH_GENERAL_URL] == GENERAL_URL:
                         category_urls[category] = category_url
                         categories_links = get_categories_links(user, password)
                         if category_url not in categories_links:
