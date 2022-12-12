@@ -9,6 +9,3 @@ def translate_text(text):
     translator = Translator()
     translation = translator.translate(text, dest=TARGET)
     print(translation.text)
-
-
-translate_text('Hola mundo')
