@@ -133,14 +133,14 @@ def main():
 
         if args.translate:
             if database.check_database(user, password, DATABASE_NAME):
-                translate(user, password, args.translate[0], args.translate[1], args.translate[2])
+                translate(user, password, args.translate[0], args.translate[1])
                 logging.info(f'Client succeeded specifying table, colum and datatype from the "shufersal"'
                              f' database to translate from hebrew to english: %s',
-                             args.translate[0], args.translate[1], args.translate[2])
+                             args.translate[0], args.translate[1])
             else:
                 logging.warning(f'Client failed specifying table, colum and datatype from the "shufersal"'
                                 f' database to translate from hebrew to english: %s',
-                                args.translate[0], args.translate[1], args.translate[2])
+                                args.translate[0], args.translate[1])
                 return
 
 

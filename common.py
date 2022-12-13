@@ -102,7 +102,7 @@ def translate_text(text):
     return translator.translate(text, dest=read_from_config('TARGET_TRANS')).text
 
 
-def translate(user, password, table, column, data_type):
+def translate(user, password, table, column, data_type=read_from_config("DATA_TYPE")):
     con = create_connection(user, password)
     database = read_from_config('DATABASE_NAME')
     variable = f"{column}_{read_from_config('TARGET_TRANS')}"

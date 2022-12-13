@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a24bcd90-0df3-4d10-ac76-250628208bbc" name="Changes" comment="add conf.json">
-      <change beforePath="$PROJECT_DIR$/page_scraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/page_scraper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -315,7 +315,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670942440116</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="add conf.json">
+      <created>1670944283386</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1670944283386</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
