@@ -119,7 +119,7 @@ def translate(user, password, table, column, data_type=read_from_config("DATA_TY
         try:
             with con.cursor() as cursor:
                 create_new_column(user, password, table, column, data_type)
-                logging.info(f'New column, {column}, added to table {table}')
+                logging.info(f'New column, {column}, added to table {table}.')
                 select_database = f"USE {database}"
                 cursor.execute(select_database)
                 update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
