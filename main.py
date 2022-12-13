@@ -126,9 +126,9 @@ def main():
         if args.all:
             if database.check_database(user, password, DATABASE_NAME):
                 if getting_shufersal_links.check_urls(user, password):
+                    page_scraper.parse_data(user, password)
                     logging.info(f'Client succeeded getting all the links from category table to parse'
                                  f' and fill "shufersal" database: %s')
-                    page_scraper.parse_data(user, password)
             else:
                 logging.warning(f'Client failed getting all the links from category table to parse'
                                 f' and fill "shufersal" database: %s')
@@ -139,11 +139,11 @@ def main():
                 translate(user, password, args.translate[0], args.translate[1])
                 logging.info(f'Client succeeded specifying table, colum and datatype from the "shufersal"'
                              f' database to translate from hebrew to english: %s',
-                             args.translate[0], args.translate[1])
+                             (args.translate[0], args.translate[1]))
             else:
                 logging.warning(f'Client failed specifying table, colum and datatype from the "shufersal"'
                                 f' database to translate from hebrew to english: %s',
-                                args.translate[0], args.translate[1])
+                                (args.translate[0], args.translate[1]))
                 return
 
 
