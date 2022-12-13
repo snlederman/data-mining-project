@@ -65,7 +65,7 @@ def main():
     parser.add_argument('password', help='password to mySQL data server')
     parser.add_argument('-url', help=f'specific category url from the "{DATABASE_NAME}" online site to parse and '
                                      f'collect to the {DATABASE_NAME} database')
-    parser.add_argument('-translate', nargs='+', help=f'specific table and colum from the "{DATABASE_NAME}" '
+    parser.add_argument('-translate', nargs=2, help=f'specific table and column from the "{DATABASE_NAME}" '
                         f'database to translate')
     parser.add_argument('-gl', action='store_true', help=f'get subcategories links to parse and fill category table')
     parser.add_argument('-all', action='store_true', help=f'get all links from category table, parse and fill'
@@ -80,6 +80,7 @@ def main():
     password = args.password
 
     if check_sql_connection(user, password):
+        logging.info(f'mySQL connection checkpoint: login completed successfully.')
 
         if args.d:
             delete_database(user, password)
@@ -104,6 +105,8 @@ def main():
                 return
 
         if args.gl:
+            print("Getting subcategories' links to parse")
+            logging.info("Getting subcategories' links to parse")
             if database.check_database(user, password, DATABASE_NAME):
                 getting_shufersal_links.get_urls(user, password)
                 logging.info(f'Client succeeded generating the subcategories links to parse and fill'
@@ -135,7 +138,10 @@ def main():
                 return
 
         if args.translate:
+
             if database.check_database(user, password, DATABASE_NAME):
+                logging.info(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
+                print(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
                 translate(user, password, args.translate[0], args.translate[1])
                 logging.info(f'Client succeeded specifying table, colum and datatype from the "shufersal"'
                              f' database to translate from hebrew to english: %s',

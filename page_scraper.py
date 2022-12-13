@@ -125,7 +125,7 @@ def exchange_rate():
         ils_to_usd = data[CONVERSION_RATE][LOCAL_CURRENCY]
     except KeyError:
         return 0
-    return ils_to_usd
+    return round(ils_to_usd, 2)
 
 
 def parse_data(user, password, *args):
@@ -138,6 +138,7 @@ def parse_data(user, password, *args):
     ils_to_usd = exchange_rate()
     product_id_count = get_product_count(user, password)
     for url_index, category_url in enumerate(category_urls):
+        print(f'Parsing: {category_url}')
         options = Options()
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.maximize_window()
@@ -223,7 +224,7 @@ def parse_data(user, password, *args):
                                   product_id_count, product_id, product_name, supplier_id,
                                   category_ids[url_index])
 
-        print(f"{count} products were scraped from category in index {category_ids[url_index]} ")
+        print(f"{count} products were scraped. Category index: {category_ids[url_index]} ")
         driver.close()
 
 

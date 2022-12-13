@@ -13,7 +13,6 @@ def read_from_config(key):
     try:
         with open('conf.json', 'r') as f:
             config = json.load(f)
-            logging.info(f'configuration file, conf.json, successfully opened: %s')
             try:
                 return config[key]
             except KeyError:
@@ -99,7 +98,9 @@ def translate_text(text):
     """Translates text into the target language.
     """
     translator = Translator()
-    return translator.translate(text, dest=read_from_config('TARGET_TRANS')).text
+    trans_result = translator.translate(text, dest=read_from_config('TARGET_TRANS')).text
+    logging.info(f'Translated input: "{text}" to "{trans_result}"')
+    return trans_result
 
 
 def translate(user, password, table, column, data_type=read_from_config("DATA_TYPE")):
@@ -114,6 +115,7 @@ def translate(user, password, table, column, data_type=read_from_config("DATA_TY
         try:
             with con.cursor() as cursor:
                 create_new_column(user, password, table, column, data_type)
+                logging.info(f'New column, {column}, added to table {table}.')
                 select_database = f"USE {database}"
                 cursor.execute(select_database)
                 update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
