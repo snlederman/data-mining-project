@@ -2,6 +2,7 @@ import logging
 import json
 import pymysql
 from googletrans import Translator
+import tqdm
 
 logging.basicConfig(filename='common.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
@@ -13,7 +14,6 @@ def read_from_config(key):
     try:
         with open('conf.json', 'r') as f:
             config = json.load(f)
-            logging.info(f'configuration file, conf.json, successfully opened: %s')
             try:
                 return config[key]
             except KeyError:
@@ -58,6 +58,7 @@ def sql_query(query, user, password):
     """
     "sql_connection" receives a string with sql query and returns it result using pymysql module.
     """
+    logging.info(f'SQL query received: {query}')
     con = pymysql.connect(host='localhost',
                           user=user,
                           password=password,
@@ -66,6 +67,7 @@ def sql_query(query, user, password):
         with con.cursor() as cursor:
             cursor.execute(query)
             result = cursor.fetchall()
+            logging.info(f'SQL query result received')
         return result
 
 
@@ -78,6 +80,7 @@ def get_categories_links(user, password):
 def create_new_column(user, password, table, column, data_type):
     query = f"ALTER TABLE {table} ADD {column}_{read_from_config('TARGET_TRANS')} {data_type} AFTER {column}"
     sql_query(query, user, password)
+    logging.info(f'Column {column}, data type: {data_type}, where added to table {table}')
 
 
 def filling_table(con, database, table, variables, *data):
@@ -99,10 +102,13 @@ def translate_text(text):
     """Translates text into the target language.
     """
     translator = Translator()
-    return translator.translate(text, dest=read_from_config('TARGET_TRANS')).text
+    result = translator.translate(text, dest=read_from_config('TARGET_TRANS')).text
+    logging.info(f'Translation: {text} where translated to {result}')
+    return result
 
 
 def translate(user, password, table, column, data_type=read_from_config("DATA_TYPE")):
+    logging.info(f'Starting to translate table {table}, column {column}')
     con = create_connection(user, password)
     database = read_from_config('DATABASE_NAME')
     variable = f"{column}_{read_from_config('TARGET_TRANS')}"
@@ -114,6 +120,7 @@ def translate(user, password, table, column, data_type=read_from_config("DATA_TY
         try:
             with con.cursor() as cursor:
                 create_new_column(user, password, table, column, data_type)
+                logging.info(f'New column, {column}, added to table {table}')
                 select_database = f"USE {database}"
                 cursor.execute(select_database)
                 update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
