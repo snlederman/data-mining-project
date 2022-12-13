@@ -24,7 +24,6 @@ from common import read_from_config
 from common import connection
 from common import get_categories_links
 from common import filling_table
-from common import translate_text
 
 logging.basicConfig(filename='page_scraper.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',

@@ -20,7 +20,7 @@ def read_from_config(key):
                 msg = f"KeyError in the configuration file, conf.json, missing key: {key}"
                 print(msg)
                 logging.error(f'KeyError in the configuration file, conf.json,'
-                                f' missing key: %s', {key})
+                              f' missing key: %s', {key})
                 raise KeyError
     except FileNotFoundError:
         msg = "configuration file, conf.json, not found"
