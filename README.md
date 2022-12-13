@@ -29,28 +29,32 @@ To run the scraper, one should run ***main.py***:\
   -dc                                      **delete** existing "Shufersal" database and **create** a new one \
   -d                                        **delete** "Shufersal" database 
 
-**NOTE:** make sure **no** Shufersal site is open when running main.py 
 
-USAGE EXAMPLES AND NOTES: 
 
-**-c** 
+\
+**USAGE EXAMPLES AND NOTES:**
+
+- make sure **no** Shufersal site is open when running main.py 
+
+\
+**-c** :
 - -c argument will create a "shufersal" database if not exist.
 
 \
-**-d** 
+**-d** :
 - -d argument will delete the "shufersal" database if exist.
 
 \
-**-gl** 
+**-gl** :
 - "shufersal" database must exist before using the -gl argument.
 
 \
-**-all** 
+**-all** :
 - "shufersal" database must exist before using the -all argument.
 - -all will parse all the acceptable urls from the category table. To fill the category table with all the acceptable links one should run the -gl command or alternatively use the -url argument.
 
 \
-**-url**
+**-url** :
 - The url following the -url argument should be from the second sub category type, for example look at *sub_links.png*
 - "shufersal" database must be created before using the -url argument.
 - The products in the url will be parsed and filed to the "shufersal" database.
@@ -58,7 +62,7 @@ USAGE EXAMPLES AND NOTES:
 - Usage example: -url https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%A4%D7%99%D7%A8%D7%95%D7%AA-%D7%95%D7%99%D7%A8%D7%A7%D7%95%D7%AA/%D7%99%D7%A8%D7%A7%D7%95%D7%AA-%D7%95%D7%A4%D7%99%D7%A8%D7%95%D7%AA-%D7%9E%D7%A6%D7%95%D7%A0%D7%A0%D7%99%D7%9D/c/A0409
 
 \
-**-translate** 
+**-translate** :
 - The translate argument can be used with other arguments, in which case it will be implemented last, or by itself. 
 - The translate argument will create a new column, if one is not exist, next to the translated column with the suffix "_en" 
 - Usage example: -translate product_details name  
