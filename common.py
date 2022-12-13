@@ -2,7 +2,6 @@ import logging
 import json
 import pymysql
 from googletrans import Translator
-import tqdm
 
 logging.basicConfig(filename='common.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
