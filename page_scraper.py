@@ -169,7 +169,10 @@ def parse_data(user, password, *args):
 
                 try:
                     price = product.find('span', class_='price').span.text
-                    price_usd = float(price)/ils_to_usd
+                    try:
+                        price_usd = float(price)/ils_to_usd
+                    except ZeroDivisionError:
+                        price_usd = 'NaN'
                 except AttributeError:
                     price = 'NaN'
                     price_usd = 'NaN'
