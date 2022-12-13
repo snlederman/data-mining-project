@@ -1,6 +1,11 @@
+import logging
 import json
 import pymysql
 from googletrans import Translator
+
+logging.basicConfig(filename='common.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 
 def read_from_config(key):
@@ -8,16 +13,19 @@ def read_from_config(key):
     try:
         with open('conf.json', 'r') as f:
             config = json.load(f)
+            logging.info(f'configuration file, conf.json, successfully opened: %s')
             try:
                 return config[key]
-            except KeyError as err:
-                msg = f"KeyError in the configuration file, conf.json, missing key: {key} "
+            except KeyError:
+                msg = f"KeyError in the configuration file, conf.json, missing key: {key}"
                 print(msg)
+                logging.error(f'KeyError in the configuration file, conf.json,'
+                                f' missing key: %s', {key})
                 raise KeyError
-
-    except FileNotFoundError as err:
+    except FileNotFoundError:
         msg = "configuration file, conf.json, not found"
         print(msg)
+        logging.warning(f'configuration file, conf.json, not found: %s')
         raise FileNotFoundError
 
 
@@ -30,20 +38,52 @@ def connection(user, password):
                                   user=user,
                                   password=password,
                                   cursorclass=pymysql.cursors.DictCursor)
+        return connect
     except RuntimeError as err:
         print(f'{err}')
-    except pymysql.err.OperationalError as err2:
+    except pymysql.err.OperationalError:
         print(f"MySQL server access denied for user '{user}' at localhost (using password: {password})")
         raise pymysql.err.OperationalError
 
-    return connect
+
+def create_connection(user, password):
+    con = pymysql.connect(host='localhost',
+                          user=user,
+                          password=password,
+                          database=read_from_config('DATABASE_NAME'))
+    return con
+
+
+def sql_query(query, user, password):
+    """
+    "sql_connection" receives a string with sql query and returns it result using pymysql module.
+    """
+    con = pymysql.connect(host='localhost',
+                          user=user,
+                          password=password,
+                          database=read_from_config('DATABASE_NAME'))
+    with con:
+        with con.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchall()
+        return result
+
+
+def get_categories_links(user, password):
+    categories_link_list_query = f"SELECT url FROM category;"
+    categories_link = sql_query(categories_link_list_query, user, password)
+    return list(map(lambda x: x[0], categories_link))
+
+
+def create_new_column(user, password, table, column, data_type):
+    query = f"ALTER TABLE {table} ADD {column}_{read_from_config('TARGET_TRANS')} {data_type} AFTER {column}"
+    sql_query(query, user, password)
 
 
 def filling_table(con, database, table, variables, *data):
     """'filling_table' get a pymysql.connection.connection attribute,
     name of a database, name of a table, string of variables and a list of data
     and add it to the table """
-
     with con.cursor() as cursor:
         select_database = f"USE {database}"
         cursor.execute(select_database)
@@ -54,11 +94,35 @@ def filling_table(con, database, table, variables, *data):
         cursor.execute(fill_table, [*data])
         con.commit()
 
+
 def translate_text(text):
     """Translates text into the target language.
     """
-    TARGET_TRANS = read_from_config('TARGET_TRANS')
     translator = Translator()
-    translation = translator.translate(text, dest=TARGET_TRANS)
-    return translation.text
+    return translator.translate(text, dest=read_from_config('TARGET_TRANS')).text
 
+
+def translate(user, password, table, column, data_type):
+    con = create_connection(user, password)
+    database = read_from_config('DATABASE_NAME')
+    variable = f"{column}_{read_from_config('TARGET_TRANS')}"
+    query = f'SELECT {column} FROM {table}'
+    data = sql_query(query, user, password)
+    row = 0
+    for value in data:
+        row += 1
+        try:
+            with con.cursor() as cursor:
+                create_new_column(user, password, table, column, data_type)
+                select_database = f"USE {database}"
+                cursor.execute(select_database)
+                update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
+                cursor.execute(update_query, f'{translate_text(*value)}')
+                con.commit()
+        except pymysql.err.OperationalError:
+            with con.cursor() as cursor:
+                select_database = f"USE {database}"
+                cursor.execute(select_database)
+                update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
+                cursor.execute(update_query, f'{translate_text(*value)}')
+                con.commit()

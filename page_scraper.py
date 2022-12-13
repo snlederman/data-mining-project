@@ -7,97 +7,92 @@ the following attributes for each product in that category:
     - container
     - supplier
 """
+import sys
+import logging
 import datetime
 import time
-import sys
-import json
+import requests
 from bs4 import BeautifulSoup
 import pymysql
-import requests
-
 # ____selenium____
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-
 # ____internal modules____
-import common
 from common import read_from_config
 from common import connection
+from common import get_categories_links
 from common import filling_table
+from common import translate_text
+
+logging.basicConfig(filename='page_scraper.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 MAIN_URL = read_from_config("MAIN_URL")
 GENERAL_URL = read_from_config("GENERAL_URL")
 LENGTH_GENERAL_URL = len(GENERAL_URL)
+DATABASE_NAME = read_from_config("DATABASE_NAME")
 RANGE_LIST = read_from_config("RANGE_LIST")
 CATEGORIES = len(RANGE_LIST)
-DATABASE_NAME = read_from_config("DATABASE_NAME")
+EXCHANGE_RATE_API_URL = read_from_config("EXCHANGE_RATE_API_URL")
 EXCHANGE_RATE_HEADERS = read_from_config("EXCHANGE_RATE_HEADERS")
+CONVERSION_RATE = read_from_config("CONVERSION_RATE")
+LOCAL_CURRENCY = read_from_config("LOCAL_CURRENCY")
+ITEMS_PER_SCROLL = read_from_config("ITEMS_PER_SCROLL")
+SCROLL_PAUSE_TIME = read_from_config("SCROLL_PAUSE_TIME")
 TARGET_TRANS = read_from_config("TARGET_TRANS")
 
 
-def create_connection(user_name, user_password):
-    conn = pymysql.connect(host='localhost', user=user_name, password=user_password, database=DATABASE_NAME)
-    return conn
+def create_connection(user, password):
+    con = pymysql.connect(host='localhost',
+                          user=user,
+                          password=password,
+                          database=DATABASE_NAME)
+    return con
 
 
-def get_categories_links(user, password):
-    connect = create_connection(user, password)
-    categories_link_list_query = f"SELECT url FROM category;"
-    categories_link = sql_queary(categories_link_list_query, connect)
-    return list(map(lambda x: x[0], categories_link))
-
-
-def sql_queary(query, connection):
+def sql_query(query, user, password):
     """
     "sql_connection" receives a string with sql query and returns it result using pymysql module.
     """
-    with connection:
-        with connection.cursor() as cursor:
+    con = create_connection(user, password)
+    with con:
+        with con.cursor() as cursor:
             cursor.execute(query)
             result = cursor.fetchall()
         return result
 
 
 def get_category_urls(user, password):
-    connect = create_connection(user, password)
     links_query = f"SELECT url FROM category;"
-    links = sql_queary(links_query, connect)
-
-    connect = create_connection(user, password)
+    links = sql_query(links_query, user, password)
     category_id_query = f"SELECT id FROM category;"
-    category_id = sql_queary(category_id_query, connect)
-
+    category_id = sql_query(category_id_query, user, password)
     return links, category_id
 
 
 def get_supplier_id(supplier_name, user, password):
     try:
-        connect = create_connection(user, password)
         supplier_name = supplier_name.replace('"', '""')
         supplier_id_query = f'SELECT id FROM suppliers WHERE supplier = "{supplier_name}";'
-        supplier_id = sql_queary(supplier_id_query, connect)
-
+        supplier_id = sql_query(supplier_id_query, user, password)
     except pymysql.err.ProgrammingError:
-        connect = create_connection(user, password)
         supplier_id_query = """SELECT id FROM suppliers WHERE supplier = '{supplier}';"""
-        supplier_id = sql_queary(supplier_id_query, connect)
-
+        supplier_id = sql_query(supplier_id_query, user, password)
     return supplier_id[0][0]
 
 
 def get_supplier_list(user, password):
-    connect = create_connection(user, password)
     suppliers_list_query = f"SELECT supplier FROM suppliers;"
-    suppliers_list = sql_queary(suppliers_list_query, connect)
+    suppliers_list = sql_query(suppliers_list_query, user, password)
     return list(map(lambda x: x[0], suppliers_list))
 
 
 def get_products_id_list(user, password):
-    connect = create_connection(user, password)
     products_id_query = f"SELECT product_id FROM product_details;"
-    products_id = sql_queary(products_id_query, connect)
+    products_id = sql_query(products_id_query, user, password)
     return list(map(lambda x: x[0], products_id))
 
 
@@ -111,30 +106,27 @@ def fill_url_get_id(user, password, category_url):
     con = connection(user, password)
     categories_links = get_categories_links(user, password)
     if category_url not in categories_links:
-        filling_table(con, 'shufersal', 'category', '(url)', category_url)
-
-    connect = create_connection(user, password)
+        filling_table(con, DATABASE_NAME, 'category', '(url)', category_url)
     category_id_query = f"SELECT id FROM category WHERE url = '{category_url}';"
-    category_id = sql_queary(category_id_query, connect)
+    category_id = sql_query(category_id_query, user, password)
     return [[category_url]], [category_id[0][0]]
 
 
 def get_product_count(user, password):
-    connect = create_connection(user, password)
     count_query = f"SELECT count(*) FROM product_details;"
-    count = sql_queary(count_query, connect)
+    count = sql_query(count_query, user, password)
     return count[0][0]
 
 
-def exchange_rate(amount):
+def exchange_rate():
     try:
-        url = f"https://api.apilayer.com/exchangerates_data/convert?to=USD&from=ILS&amount={amount}"
+        url = EXCHANGE_RATE_API_URL
         response = requests.request("GET", url, headers=EXCHANGE_RATE_HEADERS)
         data = response.json()
-        er = data['result']
+        ils_to_usd = data[CONVERSION_RATE][LOCAL_CURRENCY]
     except KeyError:
         return 0
-    return er
+    return ils_to_usd
 
 
 def parse_data(user, password, *args):
@@ -144,6 +136,7 @@ def parse_data(user, password, *args):
     else:
         category_urls, category_ids = get_category_urls(user, password)
 
+    ils_to_usd = exchange_rate()
     product_id_count = get_product_count(user, password)
     for url_index, category_url in enumerate(category_urls):
         options = Options()
@@ -151,8 +144,7 @@ def parse_data(user, password, *args):
         driver.maximize_window()
         driver.get(category_url[0])
         count = 0
-        for scroll in range(10):
-            SCROLL_PAUSE_TIME = 5
+        for scroll in range(ITEMS_PER_SCROLL):
             driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
             time.sleep(SCROLL_PAUSE_TIME)
 
@@ -163,84 +155,74 @@ def parse_data(user, password, *args):
                           'miglog-prod miglog-sellingmethod-by_unit', 'tile miglog-prod-inStock notOverlay ui-draggable'
                                                                       ' ui-draggable-handle']
 
-            for class_ in class_type:
-                products = full_content.find_all('li', class_=class_type)
-                for product in products:
+            products = full_content.find_all('li', class_=class_type)
+            for product in products:
 
-                    try:
-                        product_id = product['data-product-code']
-                    except AttributeError as err:
-                        product_id = 'NaN'
+                try:
+                    product_id = product['data-product-code']
+                except AttributeError:
+                    product_id = 'NaN'
 
-                    try:
-                        product_name = product.find('div', class_='text description').strong.text
+                try:
+                    product_name = product.find('div', class_='text description').strong.text
+                except AttributeError:
+                    product_name = 'NaN'
+
+                try:
+                    price = product.find('span', class_='price').span.text
+                    price_usd = float(price)/ils_to_usd
+                except AttributeError:
+                    price = 'NaN'
+                    price_usd = 'NaN'
+
+                try:
+                    price_unit = product.find('span', class_='priceUnit').text
+                except AttributeError:
+                    price_unit = 'NaN'
+
+                try:
+                    row = product.find('div', class_='labelsListContainer').div
+                    container = row.find_all('span')
+                    if type(container) == str or len(container) < 2:
                         try:
-                            name_trans = common.translate_text(product_name)
+                            supplier = row.span.text
                         except AttributeError:
-                            name_trans = 'NaN'
+                            supplier = 'NaN'
+                    else:
+                        try:
+                            container = row.find_all('span')[0].text
+                        except AttributeError:
+                            container = 'NaN'
 
-                    except AttributeError as err:
-                        product_name = 'NaN'
-                        name_trans = 'NaN'
+                        try:
+                            supplier = row.find_all('span')[1].text
+                        except AttributeError:
+                            supplier = 'NaN'
+                except AttributeError:
+                    price_unit = 'NaN'
+                    container = 'NaN'
 
-                    try:
-                        price = product.find('span', class_='price').span.text
-                        price_USD = exchange_rate(price)
+                products_id = get_products_id_list(user, password)
+                if product_id not in products_id:
+                    count += 1
+                    product_id_count += 1
+                    suppliers = get_supplier_list(user, password)
+                    if supplier not in suppliers:
+                        filling_table(con, DATABASE_NAME, 'suppliers', '(supplier)', supplier)
 
-                    except AttributeError as err:
-                        price = 'NaN'
-                        price_USD = 'NaN'
+                    date_time = get_date_time()
+                    filling_table(con, DATABASE_NAME, 'product_price',
+                                  '(id, price_ILS, price_USD, price_unit, container, date_time)', product_id_count,
+                                  price, price_usd, price_unit, container, date_time)
 
-                    try:
-                        priceUnit = product.find('span', class_='priceUnit').text
-                    except AttributeError as err:
-                        priceUnit = 'NaN'
-
-                    try:
-                        row = product.find('div', class_='labelsListContainer').div
-                        container = row.find_all('span')
-                        if type(container) == str or len(container) < 2:
-                            try:
-                                supplier = row.span.text
-                            except AttributeError as err:
-                                supplier = 'NaN'
-
-                        else:
-                            try:
-                                container = row.find_all('span')[0].text
-                            except AttributeError as err:
-                                container = 'NaN'
-
-                            try:
-                                supplier = row.find_all('span')[1].text
-                            except AttributeError as err:
-                                supplier = 'NaN'
-
-                    except AttributeError as err:
-                        priceUnit = 'NaN'
-                        container = 'NaN'
-
-                    products_id = get_products_id_list(user, password)
-                    if product_id not in products_id:
-                        count += 1
-                        product_id_count += 1
-                        suppliers = get_supplier_list(user, password)
-                        if supplier not in suppliers:
-                            filling_table(con, DATABASE_NAME, 'suppliers', '(supplier)', supplier)
-
-                        date_time = get_date_time()
-                        filling_table(con, DATABASE_NAME, 'product_price',
-                                      '(id, price_ILS, price_USD, price_unit, container, date_time)',
-                                      product_id_count, price, price_USD, priceUnit, container, date_time)
-
-                        supplier_id = get_supplier_id(supplier, user, password)
-                        filling_table(con, DATABASE_NAME, 'product_details',
-                                      f'(id, product_id, name, trans_to_{TARGET_TRANS}, id_suppliers, id_category)',
-                                      product_id_count, product_id, product_name, name_trans, supplier_id,
-                                      category_ids[url_index])
+                    supplier_id = get_supplier_id(supplier, user, password)
+                    filling_table(con, DATABASE_NAME, 'product_details',
+                                  f'(id, product_id, name, id_suppliers, id_category)',
+                                  product_id_count, product_id, product_name, supplier_id,
+                                  category_ids[url_index])
 
         print(f"{count} products were scraped from category in index {category_ids[url_index]} ")
-    driver.close()
+        driver.close()
 
 
 if __name__ == '__main__':

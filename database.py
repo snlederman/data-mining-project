@@ -1,16 +1,21 @@
-import pymysql
 import sys
-
+import logging
+import pymysql
 # ____internal modules____
-from common import connection
 from common import read_from_config
+from common import connection
+
+logging.basicConfig(filename='database.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 DATABASE_NAME = read_from_config("DATABASE_NAME")
 TARGET_TRANS = read_from_config("TARGET_TRANS")
 
+
 def create_database(con, name):
     """'create_database' get a pymysql.connection.connection attribute
-    and a name and creates an sql database, called by the name input"""
+    and a name and creates a sql database, called by the name input"""
 
     try:
         with con.cursor() as cursor:
@@ -31,14 +36,15 @@ def check_database(user, password, database):
             cursor.execute(check_database_sql)
             return True
         except pymysql.err.OperationalError:
-            print(f"Database '{database}' doesn't exist, create database using -c argument to initialize the Shufersal scraper.")
+            print(f"Database '{database}' doesn't exist, create database using"
+                  f" -c argument to initialize the Shufersal scraper.")
             return False
 
 
 def create_table(con, database, name, *args):
     """'attribute' get a pymysql.connection.connection attribute,
     name of a database, name of a new table and a list of arguments
-    containing an sql code to implement on the new table"""
+    containing a sql code to implement on the new table"""
 
     with con.cursor() as cursor:
         select_database = f'USE {database}'
@@ -55,20 +61,19 @@ def delete_database(user, password, database):
         delete_database_sql = f"DROP DATABASE {database};"
         cursor.execute(delete_database_sql)
 
-    return
-
 
 def main(user, password):
     """
-    Main function of the module, creates the foundation of the 'shufersal' database using the MySQL Server
+    Main function of the module, creates the foundation of the 'Shufersal' database using the MySQL Server
     """
 
     connect = connection(user, password)
 
     try:
         create_database(connect, DATABASE_NAME)
-    except pymysql.err.ProgrammingError as e:
+    except pymysql.err.ProgrammingError:
         raise pymysql.err.ProgrammingError
+
     category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'category VARCHAR(45)', 'url VARCHAR(500)'
     create_table(connect, DATABASE_NAME, 'category', *category_table_data)
 
@@ -79,17 +84,16 @@ def main(user, password):
                          'container VARCHAR(45)', 'date_time DATETIME'
     create_table(connect, DATABASE_NAME, 'product_price', *product_price_data)
 
-    product_details_data = 'id INT PRIMARY KEY', 'product_id VARCHAR(20)', 'name VARCHAR(200)', f'trans_to_{TARGET_TRANS} VARCHAR(200)', \
+    product_details_data = 'id INT PRIMARY KEY', 'product_id VARCHAR(20)', 'name VARCHAR(200)',\
                            'id_suppliers INT', 'id_category INT', \
                            'FOREIGN KEY (id_suppliers) REFERENCES suppliers(id)', \
                            'FOREIGN KEY (id_category) REFERENCES category(id)', \
                            'FOREIGN KEY (id) REFERENCES product_price(id)'
-
     create_table(connect, DATABASE_NAME, 'product_details', *product_details_data)
 
     with connect.cursor() as cursor:
-        FOREIGN_KEY_CHECKS = 'SET FOREIGN_KEY_CHECKS = 0;'
-        cursor.execute(FOREIGN_KEY_CHECKS)
+        foreign_key_checks = 'SET FOREIGN_KEY_CHECKS = 0;'
+        cursor.execute(foreign_key_checks)
 
 
 if __name__ == '__main__':

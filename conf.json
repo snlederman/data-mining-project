@@ -1,1 +1,15 @@
-{"DATABASE_NAME": "shufersal", "MAIN_URL": "https://www.shufersal.co.il/online/he/S", "GENERAL_URL": "https://www.shufersal.co.il", "RANGE_LIST": [[3, 15], [2, 10], [4, 15]], "MINIMUM_NUMBER_OF_LINKS": 20, "EXCHANGE_RATE_HEADERS": {"apikey": "PgMhRm9ZdKZQRmOwjUwbKBYHSOtYDbpm"}, "TARGET_TRANS": "en"}
+{
+  "MAIN_URL": "https://www.shufersal.co.il/online/he/S",
+  "GENERAL_URL": "https://www.shufersal.co.il",
+  "DATABASE_NAME": "shufersal",
+  "RANGE_LIST": [[3, 15], [2, 10], [4, 15]],
+  "MINIMUM_NUMBER_OF_LINKS": 20,
+  "MOVE_PAUSE_TIME":1,
+  "EXCHANGE_RATE_API_URL": "https://v6.exchangerate-api.com/v6/35eedde92530dc510e2a8580/latest/USD",
+  "EXCHANGE_RATE_HEADERS": {"apikey": "35eedde92530dc510e2a8580"},
+  "CONVERSION_RATE": "conversion_rates",
+  "LOCAL_CURRENCY": "ILS",
+  "ITEMS_PER_SCROLL": 10,
+  "SCROLL_PAUSE_TIME":5,
+  "TARGET_TRANS": "en"
+}

@@ -1,12 +1,10 @@
 """
-The script extracts all relevant urls addresses from the online supermarket of "shufersal"
+The script extracts all relevant urls addresses from the online supermarket of "Shufersal"
 """
 import sys
+import logging
 import time
-import pymysql
 from bs4 import BeautifulSoup
-import requests
-
 # ____selenium____
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -14,53 +12,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-
 # ____internal modules____
 from common import read_from_config
 from common import connection
+from common import get_categories_links
 from common import filling_table
+
+logging.basicConfig(filename='getting_shufersal_links.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 MAIN_URL = read_from_config("MAIN_URL")
 GENERAL_URL = read_from_config("GENERAL_URL")
 LENGTH_GENERAL_URL = len(GENERAL_URL)
+DATABASE_NAME = read_from_config("DATABASE_NAME")
 RANGE_LIST = read_from_config("RANGE_LIST")
 MINIMUM_NUMBER_OF_LINKS = read_from_config("MINIMUM_NUMBER_OF_LINKS")
-DATABASE_NAME = read_from_config("DATABASE_NAME")
-
-
-def from_url_to_soup(url_address):
-    """
-     get_soup_from_url gets an url address and returns it html content using BeautifulSoup4
-
-    :param url_address:  url address string
-    :return: soup - class 'bs4.BeautifulSoup'
-    """
-    r = requests.get(url_address)
-    soup = BeautifulSoup(r.content, "html.parser")
-    return soup
-
-
-def create_connection(user_name, user_password):
-    connection = pymysql.connect(host='localhost', user=user_name, password=user_password, database=DATABASE_NAME)
-    return connection
-
-
-def sql_queary(query, connection):
-    """
-    "sql_connection" receives a string with sql query and returns it result using pymysql module.
-    """
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute(query)
-            result = cursor.fetchall()
-        return result
-
-
-def get_categories_links(user, password):
-    connect = create_connection(user, password)
-    categories_link_list_query = f"SELECT url FROM category;"
-    categories_link = sql_queary(categories_link_list_query, connect)
-    return list(map(lambda x: x[0], categories_link))
+MOVE_PAUSE_TIME = read_from_config("MOVE_PAUSE_TIME")
+TARGET_TRANS = read_from_config("TARGET_TRANS")
 
 
 def check_urls(user, password):
@@ -90,7 +59,7 @@ def get_urls(user, password):
         element = driver.find_element(By.XPATH,
                                       f'/ html / body / main / header / div[2] / nav / div / ul[1] / li[{i + 2}]')
         action.move_to_element(element).perform()
-        time.sleep(1)
+        time.sleep(MOVE_PAUSE_TIME)
         elements = RANGE_LIST[i]
 
         for j in range(*elements):
@@ -112,9 +81,9 @@ def get_urls(user, password):
                         categories_links = get_categories_links(user, password)
                         if category_url not in categories_links:
                             fill_count += 1
-                            filling_table(con, 'shufersal', 'category', '(category, url)', category, category_url)
-
-    print(f'{fill_count} sub categories urls were scraped successfully from "Shupersal" online site')
+                            filling_table(con, DATABASE_NAME, 'category', '(category, url)', category, category_url)
+    print(f'{fill_count} sub categories urls were scraped successfully from "Shufersal" online site')
+    driver.close()
     return category_urls
 
 
