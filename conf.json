@@ -1,7 +1,10 @@
 {
+  "MYSQL_USER": "ofir_samuel",
+  "MYSQL_PASSWORD": "ofir_samuel",
+  "HOST": "data-mining-db1.cttpnp4olbpx.us-west-1.rds.amazonaws.com",
   "MAIN_URL": "https://www.shufersal.co.il/online/he/S",
   "GENERAL_URL": "https://www.shufersal.co.il",
-  "DATABASE_NAME": "shufersal",
+  "DATABASE_NAME": "ofir_samuel",
   "RANGE_LIST": [[3, 15], [2, 10], [4, 15]],
   "MINIMUM_NUMBER_OF_LINKS": 20,
   "MOVE_PAUSE_TIME":1,

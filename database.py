@@ -69,11 +69,6 @@ def main(user, password):
 
     connect = connection(user, password)
 
-    try:
-        create_database(connect, DATABASE_NAME)
-    except pymysql.err.ProgrammingError:
-        raise pymysql.err.ProgrammingError
-
     category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'category VARCHAR(45)', 'url VARCHAR(500)'
     create_table(connect, DATABASE_NAME, 'category', *category_table_data)
 

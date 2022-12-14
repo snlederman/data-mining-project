@@ -45,7 +45,7 @@ TARGET_TRANS = read_from_config("TARGET_TRANS")
 
 
 def create_connection(user, password):
-    con = pymysql.connect(host='localhost',
+    con = pymysql.connect(host=read_from_config("HOST"),
                           user=user,
                           password=password,
                           database=DATABASE_NAME)

@@ -34,7 +34,7 @@ def connection(user, password):
     and returns a pymysql.connection.connection attribute"""
 
     try:
-        connect = pymysql.connect(host='localhost',
+        connect = pymysql.connect(host=read_from_config("HOST"),
                                   user=user,
                                   password=password,
                                   cursorclass=pymysql.cursors.DictCursor)
@@ -47,7 +47,7 @@ def connection(user, password):
 
 
 def create_connection(user, password):
-    con = pymysql.connect(host='localhost',
+    con = pymysql.connect(host=read_from_config("HOST"),
                           user=user,
                           password=password,
                           database=read_from_config('DATABASE_NAME'))
@@ -58,7 +58,7 @@ def sql_query(query, user, password):
     """
     "sql_connection" receives a string with sql query and returns it result using pymysql module.
     """
-    con = pymysql.connect(host='localhost',
+    con = pymysql.connect(host=read_from_config("HOST"),
                           user=user,
                           password=password,
                           database=read_from_config('DATABASE_NAME'))

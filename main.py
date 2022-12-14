@@ -14,6 +14,8 @@ logging.basicConfig(filename='main.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
                     level=logging.INFO)
 
+MYSQL_USER = read_from_config('MYSQL_USER')
+MYSQL_PASSWORD = read_from_config('MYSQL_PASSWORD')
 DATABASE_NAME = read_from_config('DATABASE_NAME')
 
 
@@ -35,7 +37,7 @@ def delete_database(user, password):
         delete_database(user, password)
 
 
-def build_shufersal_database(user, password):
+def build_shufersal_tables(user, password):
     """'build_shufersal_database' creates the 'shufersal' database."""
     try:
         database.main(user, password)
@@ -61,8 +63,8 @@ def main():
     the Shufersal scraper enables the user to scrab the data 
     from the online supermarket site of the Shufersal chain: https://www.shufersal.co.il""")
 
-    parser.add_argument('user', help='user name to mySQL data server')
-    parser.add_argument('password', help='password to mySQL data server')
+    parser.add_argument('-user', help='user name to mySQL data server')
+    parser.add_argument('-password', help='password to mySQL data server')
     parser.add_argument('-url', help=f'specific category url from the "{DATABASE_NAME}" online site to parse and '
                         f'collect to the {DATABASE_NAME} database')
     parser.add_argument('-translate', nargs=3, metavar=('TABLE', 'COLUMN', 'LANGUAGE=ENGLISH'),
@@ -79,8 +81,8 @@ def main():
     parser.add_argument('-d', action='store_true', help=f'delete "{DATABASE_NAME}" database')
 
     args = parser.parse_args()
-    user = args.user
-    password = args.password
+    user = MYSQL_USER
+    password = MYSQL_PASSWORD
 
     if check_sql_connection(user, password):
         logging.info(f'mySQL connection checkpoint: login completed successfully.')
