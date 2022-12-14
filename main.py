@@ -103,7 +103,7 @@ def main():
 
         if args.c:
             try:
-                build_shufersal_database(user, password)
+                build_shufersal_tables(user, password)
                 logging.info(f'Client successfully created a new "shufersal" database: %s')
             except pymysql.err.ProgrammingError:
                 logging.warning(f'Client failed creating a new "shufersal" database: %s')
