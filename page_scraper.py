@@ -19,6 +19,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import TimeoutException
 # ____internal modules____
 from common import read_from_config
 from common import connection
@@ -149,12 +150,11 @@ def parse_data(user, password, *args):
         driver.get(category_url[0])
         count = 0
         for scroll in range(ITEMS_PER_SCROLL):
-            driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
-            time.sleep(SCROLL_PAUSE_TIME)
-
             try:
+                driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+                time.sleep(SCROLL_PAUSE_TIME)
                 html = driver.page_source
-            except BaseException as err:
+            except TimeoutException as err:
                 logging.warning(f"Selenium driver failed to execute script: {err} ")
                 print(f"Selenium driver failed to execute script: {err} ")
                 continue
@@ -162,8 +162,8 @@ def parse_data(user, password, *args):
             full_content = BeautifulSoup(html, "lxml")
 
             class_type = ['miglog-prod miglog-sellingmethod-by_package', 'miglog-prod miglog-sellingmethod-by_weight',
-                          'miglog-prod miglog-sellingmethod-by_unit', 'tile miglog-prod-inStock notOverlay ui-draggable'
-                                                                      ' ui-draggable-handle']
+                          'miglog-prod miglog-sellingmethod-by_unit', 'tile miglog-prod-inStock notOverlay ui-draggable',
+                           ' ui-draggable-handle', 'SEARCH tileBlock miglog-prod']
 
             products = full_content.find_all('li', class_=class_type)
             for product in products:
@@ -182,7 +182,11 @@ def parse_data(user, password, *args):
                     if ils_to_usd == 'NaN':
                         price_usd = 'NaN'
                     else:
-                        price_usd = float(price)/ils_to_usd
+                        try:
+                            price_usd = float(price)/ils_to_usd
+                        except ValueError:
+                            price_usd = 'NaN'
+                            price = 'NaN'
                 except AttributeError:
                     price = 'NaN'
                     price_usd = 'NaN'
