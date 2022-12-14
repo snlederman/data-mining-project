@@ -144,8 +144,8 @@ def parse_data(user, password, *args):
         logging.info(f'Start parsing: {category_url}')
         options = Options()
         options.headless = True
+        options.add_argument('--window-size=1920,1080')
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        driver.maximize_window()
         driver.get(category_url[0])
         count = 0
         for scroll in range(ITEMS_PER_SCROLL):

@@ -49,8 +49,8 @@ def get_urls(user, password):
     con = connection(user, password)
     options = Options()
     options.headless = True
+    options.add_argument('--window-size=1920,1080')
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    driver.maximize_window()
     driver.get(MAIN_URL)
     action = ActionChains(driver)
     category_urls = dict()

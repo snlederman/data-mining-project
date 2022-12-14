@@ -152,11 +152,11 @@ def main():
                 print(f'Successful translation of table "{args.translate[0]}", column "{args.translate[1]}".')
                 logging.info(f'Client succeeded specifying table, colum and datatype from the "shufersal"'
                              f' database to translate from hebrew to {args.translate[2]}: %s',
-                             (args.translate[0], args.translate[1]), args.translate[2])
+                             (args.translate[0], args.translate[1], args.translate[2]))
             else:
                 logging.warning(f'Client failed specifying table, colum and datatype from the "shufersal"'
                                 f' database to translate from hebrew to {args.translate[2]}: %s',
-                                (args.translate[0], args.translate[1]), args.translate[2])
+                                (args.translate[0], args.translate[1], args.translate[2]))
                 print(f'Unsuccessful translation of table "{args.translate[0]}", column "{args.translate[1]}".')
                 return
 
