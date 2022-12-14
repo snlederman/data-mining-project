@@ -22,7 +22,10 @@ To run the scraper, one should run ***main.py***:\
 *Optional arguments:*\
   -h,  --help                          **show** this help message and exit \
   -url  URL                            **specific category url** from the "Shufersal" online site to parse and collect to the shufersal database \
-  -translate TRANSLATE TRANSLATE        **translate** specific table and column from the "shufersal" database to english \
+  -translate TABLE COLUMN LANGUAGE=ENGLISH        \
+                                             **translate** specific table and column from the "Shufersal"
+                        database to the desired language (english
+                        by default). \
   -gl                                       **get** subcategories **links** to parse and fill category table \
   -all                                      get all links from category table, **parse and fill** "Shufersal" database \
   -c                                        **create** "Shufersal" database \
@@ -65,6 +68,7 @@ To run the scraper, one should run ***main.py***:\
 **-translate** :
 - The translate argument can be used with other arguments, in which case it will be implemented last, or by itself. 
 - The translate argument will create a new column, if one is not exist, next to the translated column with the suffix "_en" 
+- To see the available languages insert "languages" as the argument for LANGUAGE
 - Usage example: -translate product_details name  
 -> translate table "product_details", column "name" and insert translation to column "name_en" 
 
