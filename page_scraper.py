@@ -143,6 +143,7 @@ def parse_data(user, password, *args):
         print(f'Parsing: {category_url}')
         logging.info(f'Start parsing: {category_url}')
         options = Options()
+        options.headless = True
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.maximize_window()
         driver.get(category_url[0])

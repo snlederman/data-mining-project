@@ -48,6 +48,7 @@ def get_urls(user, password):
     """
     con = connection(user, password)
     options = Options()
+    options.headless = True
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.maximize_window()
     driver.get(MAIN_URL)
