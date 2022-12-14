@@ -2,6 +2,7 @@ import logging
 import json
 import pymysql
 from googletrans import Translator
+from tqdm import tqdm
 
 logging.basicConfig(filename='common.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
@@ -74,11 +75,6 @@ def get_categories_links(user, password):
     return list(map(lambda x: x[0], categories_link))
 
 
-def create_new_column(user, password, table, column, data_type):
-    query = f"ALTER TABLE {table} ADD {column}_{read_from_config('TARGET_TRANS')} {data_type} AFTER {column}"
-    sql_query(query, user, password)
-
-
 def filling_table(con, database, table, variables, *data):
     """'filling_table' get a pymysql.connection.connection attribute,
     name of a database, name of a table, string of variables and a list of data
@@ -94,37 +90,45 @@ def filling_table(con, database, table, variables, *data):
         con.commit()
 
 
-def translate_text(text):
+def create_new_column(user, password, table, column, language, data_type):
+    query = f"ALTER TABLE {table} ADD {column}_{language} {data_type} AFTER {column}"
+    sql_query(query, user, password)
+    logging.info(f'New column, {column}, added to table {table}.')
+
+
+def update_column_row(user, password, table, column, language, row, value):
+    database = read_from_config('DATABASE_NAME')
+    variable = f"{column}_{language}"
+    con = create_connection(user, password)
+    with con.cursor() as cursor:
+        select_database = f"USE {database}"
+        cursor.execute(select_database)
+        update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
+        cursor.execute(update_query, f'{translate_text(*value, language)}')
+        con.commit()
+
+
+def translate_text(text, language):
     """Translates text into the target language.
     """
     translator = Translator()
-    trans_result = translator.translate(text, dest=read_from_config('TARGET_TRANS')).text
+    if text == 'NaN':
+        trans_result = 'NaN'
+    else:
+        trans_result = translator.translate(text, dest=language).text
     logging.info(f'Translated input: "{text}" to "{trans_result}"')
     return trans_result
 
 
-def translate(user, password, table, column, data_type=read_from_config("DATA_TYPE")):
-    con = create_connection(user, password)
-    database = read_from_config('DATABASE_NAME')
-    variable = f"{column}_{read_from_config('TARGET_TRANS')}"
+def translate(user, password, table, column, language=read_from_config('TARGET_TRANS'),
+              data_type=read_from_config("DATA_TYPE")):
     query = f'SELECT {column} FROM {table}'
     data = sql_query(query, user, password)
     row = 0
-    for value in data:
+    for i in tqdm(range(len(data))):
         row += 1
         try:
-            with con.cursor() as cursor:
-                create_new_column(user, password, table, column, data_type)
-                logging.info(f'New column, {column}, added to table {table}.')
-                select_database = f"USE {database}"
-                cursor.execute(select_database)
-                update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
-                cursor.execute(update_query, f'{translate_text(*value)}')
-                con.commit()
+            create_new_column(user, password, table, column, language, data_type)
+            update_column_row(user, password, table, column, language, row, data[i])
         except pymysql.err.OperationalError:
-            with con.cursor() as cursor:
-                select_database = f"USE {database}"
-                cursor.execute(select_database)
-                update_query = f"UPDATE {table} SET {variable} = %s WHERE id = {row}"
-                cursor.execute(update_query, f'{translate_text(*value)}')
-                con.commit()
+            update_column_row(user, password, table, column, language, row, data[i])

@@ -118,14 +118,16 @@ def get_product_count(user, password):
 
 
 def exchange_rate():
-    try:
-        url = EXCHANGE_RATE_API_URL
-        response = requests.request("GET", url, headers=EXCHANGE_RATE_HEADERS)
+    url = EXCHANGE_RATE_API_URL
+    response = requests.request("GET", url, headers=EXCHANGE_RATE_HEADERS)
+    if response:
         data = response.json()
         ils_to_usd = data[CONVERSION_RATE][LOCAL_CURRENCY]
-    except KeyError:
-        return 0
-    return round(ils_to_usd, 2)
+        logging.info(f'exchange rate from ILS to USD url successfully scrapped, exchange rate: %s', ils_to_usd)
+        return round(ils_to_usd, 2)
+    else:
+        logging.critical(f'exchange rate from ILS to USD was not found: %s', response)
+        return 'NaN'
 
 
 def parse_data(user, password, *args):
@@ -164,7 +166,6 @@ def parse_data(user, password, *args):
 
             products = full_content.find_all('li', class_=class_type)
             for product in products:
-
                 try:
                     product_id = product['data-product-code']
                 except AttributeError:
@@ -177,10 +178,10 @@ def parse_data(user, password, *args):
 
                 try:
                     price = product.find('span', class_='price').span.text
-                    try:
-                        price_usd = float(price)/ils_to_usd
-                    except ZeroDivisionError:
+                    if ils_to_usd == 'NaN':
                         price_usd = 'NaN'
+                    else:
+                        price_usd = float(price)/ils_to_usd
                 except AttributeError:
                     price = 'NaN'
                     price_usd = 'NaN'

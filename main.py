@@ -1,6 +1,7 @@
 import argparse
 import logging
 import pymysql
+from googletrans import LANGUAGES
 # ____internal modules____
 from common import read_from_config
 from common import connection
@@ -46,7 +47,6 @@ def build_shufersal_database(user, password):
 
 
 def check_sql_connection(user, password):
-    """'check_sql_connection' checks for """
     try:
         connection(user, password)
         logging.info(f'MySQL connection established: %s', user)
@@ -64,15 +64,18 @@ def main():
     parser.add_argument('user', help='user name to mySQL data server')
     parser.add_argument('password', help='password to mySQL data server')
     parser.add_argument('-url', help=f'specific category url from the "{DATABASE_NAME}" online site to parse and '
-                                     f'collect to the {DATABASE_NAME} database')
-    parser.add_argument('-translate', nargs=2, help=f'specific table and column from the "{DATABASE_NAME}" '
-                        f'database to translate')
-    parser.add_argument('-gl', action='store_true', help=f'get subcategories links to parse and fill category table')
+                        f'collect to the {DATABASE_NAME} database')
+    parser.add_argument('-translate', nargs=3, metavar=('TABLE', 'COLUMN', 'LANGUAGE=ENGLISH'),
+                        help=f'specific table and column from the "{DATABASE_NAME}" database to translate to '
+                        f'the desired language (english by default). To see the available languages insert languages'
+                             f' as the argument for LANGUAGE')
+    parser.add_argument('-gl', action='store_true', help=f'get subcategories links to parse and fill category'
+                        f' table')
     parser.add_argument('-all', action='store_true', help=f'get all links from category table, parse and fill'
-                                                          f' "{DATABASE_NAME}" database')
+                        f' "{DATABASE_NAME}" database')
     parser.add_argument('-c', action='store_true', help=f'create "{DATABASE_NAME}" database')
     parser.add_argument('-dc', action='store_true', help=f'delete existing "{DATABASE_NAME}"'
-                                                         f' database and creating a new one')
+                        f' database and creating a new one')
     parser.add_argument('-d', action='store_true', help=f'delete "{DATABASE_NAME}" database')
 
     args = parser.parse_args()
@@ -138,18 +141,21 @@ def main():
                 return
 
         if args.translate:
-
-            if database.check_database(user, password, DATABASE_NAME):
+            if args.translate[2] == 'languages':
+                print(LANGUAGES)
+            elif database.check_database(user, password, DATABASE_NAME):
                 logging.info(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
                 print(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
-                translate(user, password, args.translate[0], args.translate[1])
+                translate(user, password, args.translate[0], args.translate[1], args.translate[2])
+                print(f'Successful translation of table "{args.translate[0]}", column "{args.translate[1]}".')
                 logging.info(f'Client succeeded specifying table, colum and datatype from the "shufersal"'
-                             f' database to translate from hebrew to english: %s',
-                             (args.translate[0], args.translate[1]))
+                             f' database to translate from hebrew to {args.translate[2]}: %s',
+                             (args.translate[0], args.translate[1]), args.translate[2])
             else:
                 logging.warning(f'Client failed specifying table, colum and datatype from the "shufersal"'
-                                f' database to translate from hebrew to english: %s',
-                                (args.translate[0], args.translate[1]))
+                                f' database to translate from hebrew to {args.translate[2]}: %s',
+                                (args.translate[0], args.translate[1]), args.translate[2])
+                print(f'Unsuccessful translation of table "{args.translate[0]}", column "{args.translate[1]}".')
                 return
 
 
