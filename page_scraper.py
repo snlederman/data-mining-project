@@ -139,6 +139,7 @@ def parse_data(user, password, *args):
     product_id_count = get_product_count(user, password)
     for url_index, category_url in enumerate(category_urls):
         print(f'Parsing: {category_url}')
+        logging.info(f'Start parsing: {category_url}')
         options = Options()
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.maximize_window()
@@ -148,7 +149,13 @@ def parse_data(user, password, *args):
             driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
             time.sleep(SCROLL_PAUSE_TIME)
 
-            html = driver.page_source
+            try:
+                html = driver.page_source
+            except BaseException as err:
+                logging.warning(f"Selenium driver failed to execute script: {err} ")
+                print(f"Selenium driver failed to execute script: {err} ")
+                continue
+
             full_content = BeautifulSoup(html, "lxml")
 
             class_type = ['miglog-prod miglog-sellingmethod-by_package', 'miglog-prod miglog-sellingmethod-by_weight',
@@ -225,6 +232,7 @@ def parse_data(user, password, *args):
                                   category_ids[url_index])
 
         print(f"{count} products were scraped. Category index: {category_ids[url_index]} ")
+        logging.info(f'f"{count} products were scraped. Category index: {category_ids[url_index]}')
         driver.close()
 
 
