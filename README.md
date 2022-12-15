@@ -52,7 +52,7 @@ To run the scraper, one should run ***main.py***:\
 - The translate argument can be used with other arguments, in which case it will be implemented last, or by itself. 
 - The translate argument will create a new column, if it does not exist, next to the translated column with the suffix "_language" 
 - To see the available languages insert "languages" as the argument for LANGUAGE
-- Usage example: -translate product_details name  
--> translates table "product_details", column "name" and insert translation to column "name_en" 
+- Usage example: -translate product_details name en 
+-> translates table "product_details", column "name" and insert translation to english in column "name_en" 
 
 

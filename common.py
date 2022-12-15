@@ -120,8 +120,7 @@ def translate_text(text, language):
     return trans_result
 
 
-def translate(user, password, table, column, language=read_from_config('TARGET_TRANS'),
-              data_type=read_from_config("DATA_TYPE")):
+def translate(user, password, table, column, language, data_type=read_from_config("DATA_TYPE")):
     query = f'SELECT {column} FROM {table}'
     data = sql_query(query, user, password)
     row = 0

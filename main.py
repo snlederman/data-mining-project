@@ -53,10 +53,10 @@ def main():
                         f'collect to the {DATABASE_NAME} database')
     parser.add_argument('-all', action='store_true', help=f'get all links from category table, parse and fill'
                         f' "{DATABASE_NAME}" database')
-    parser.add_argument('-translate', nargs=2, metavar=('TABLE', 'COLUMN'),
+    parser.add_argument('-translate', nargs=3, metavar=('TABLE', 'COLUMN', 'LANGUAGE'),
                         help=f'specific table and column from the "{DATABASE_NAME}" database to translate to '
-                             f'the desired language (english by default). To see the available languages insert '
-                             f'languages as the argument for LANGUAGE')
+                             'the desired language. To see the available languages insert languages as the'
+                             ' argument for LANGUAGE')
 
     args = parser.parse_args()
     user = MYSQL_USER
@@ -95,7 +95,7 @@ def main():
             else:
                 logging.info(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
                 print(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
-                translate(user, password, args.translate[0], args.translate[1])
+                translate(user, password, args.translate[0], args.translate[1], args.translate[2])
                 print(f'Successful translation of table "{args.translate[0]}", column "{args.translate[1]}".')
                 logging.info(f'Client succeeded specifying table, colum and datatype from the "shufersal"'
                              f' database to translate from hebrew to {args.translate[2]}: %s',
