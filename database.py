@@ -1,6 +1,5 @@
 import sys
 import logging
-import pymysql
 # ____internal modules____
 from common import read_from_config
 from common import connection
@@ -13,39 +12,10 @@ DATABASE_NAME = read_from_config("DATABASE_NAME")
 TARGET_TRANS = read_from_config("TARGET_TRANS")
 
 
-def create_database(con, name):
-    """'create_database' get a pymysql.connection.connection attribute
-    and a name and creates a sql database, called by the name input"""
-
-    try:
-        with con.cursor() as cursor:
-            database = f'CREATE DATABASE {name}'
-            cursor.execute(database)
-    except pymysql.err.ProgrammingError as e:
-        print(f'ERROR {e.args[0]}: {e.args[1]}')
-        raise pymysql.err.ProgrammingError
-
-
-def check_database(user, password, database):
-    """ checks if the database exist, returns true if it is and false if it doesn't"""
-    con = connection(user, password)
-
-    with con.cursor() as cursor:
-        try:
-            check_database_sql = f"USE {database};"
-            cursor.execute(check_database_sql)
-            return True
-        except pymysql.err.OperationalError:
-            print(f"Database '{database}' doesn't exist, create database using"
-                  f" -c argument to initialize the Shufersal scraper.")
-            return False
-
-
 def create_table(con, database, name, *args):
     """'attribute' get a pymysql.connection.connection attribute,
     name of a database, name of a new table and a list of arguments
     containing a sql code to implement on the new table"""
-
     with con.cursor() as cursor:
         select_database = f'USE {database}'
         cursor.execute(select_database)
@@ -54,19 +24,10 @@ def create_table(con, database, name, *args):
         cursor.execute(table)
 
 
-def delete_database(user, password, database):
-    con = connection(user, password)
-
-    with con.cursor() as cursor:
-        delete_database_sql = f"DROP DATABASE {database};"
-        cursor.execute(delete_database_sql)
-
-
 def main(user, password):
     """
     Main function of the module, creates the foundation of the 'Shufersal' database using the MySQL Server
     """
-
     connect = connection(user, password)
 
     category_table_data = 'id INT AUTO_INCREMENT PRIMARY KEY', 'category VARCHAR(45)', 'url VARCHAR(500)'

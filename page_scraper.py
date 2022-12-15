@@ -161,9 +161,12 @@ def parse_data(user, password, *args):
 
             full_content = BeautifulSoup(html, "lxml")
 
-            class_type = ['miglog-prod miglog-sellingmethod-by_package', 'miglog-prod miglog-sellingmethod-by_weight',
-                          'miglog-prod miglog-sellingmethod-by_unit', 'tile miglog-prod-inStock notOverlay ui-draggable',
-                           ' ui-draggable-handle', 'SEARCH tileBlock miglog-prod']
+            class_type = ['miglog-prod miglog-sellingmethod-by_package',
+                          'miglog-prod miglog-sellingmethod-by_weight',
+                          'miglog-prod miglog-sellingmethod-by_unit',
+                          'tile miglog-prod-inStock notOverlay ui-draggable',
+                          ' ui-draggable-handle',
+                          'SEARCH tileBlock miglog-prod']
 
             products = full_content.find_all('li', class_=class_type)
             for product in products:
