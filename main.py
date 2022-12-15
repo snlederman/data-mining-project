@@ -95,7 +95,7 @@ def main():
             else:
                 logging.info(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
                 print(f'Starting to translate table "{args.translate[0]}", column "{args.translate[1]}".')
-                translate(user, password, args.translate[0], args.translate[1], args.translate[2])
+                translate(user, password, args.translate[0], args.translate[1])
                 print(f'Successful translation of table "{args.translate[0]}", column "{args.translate[1]}".')
                 logging.info(f'Client succeeded specifying table, colum and datatype from the "shufersal"'
                              f' database to translate from hebrew to {args.translate[2]}: %s',
