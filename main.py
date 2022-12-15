@@ -53,7 +53,7 @@ def main():
                         f'collect to the {DATABASE_NAME} database')
     parser.add_argument('-all', action='store_true', help=f'get all links from category table, parse and fill'
                         f' "{DATABASE_NAME}" database')
-    parser.add_argument('-translate', nargs=3, metavar=('TABLE', 'COLUMN', 'LANGUAGE=ENGLISH'),
+    parser.add_argument('-translate', nargs=2, metavar=('TABLE', 'COLUMN'),
                         help=f'specific table and column from the "{DATABASE_NAME}" database to translate to '
                              f'the desired language (english by default). To see the available languages insert '
                              f'languages as the argument for LANGUAGE')
