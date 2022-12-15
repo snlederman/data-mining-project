@@ -124,7 +124,7 @@ def translate(user, password, table, column, language, data_type=read_from_confi
     query = f'SELECT {column} FROM {table}'
     data = sql_query(query, user, password)
     row = 0
-    for i in tqdm(range(7123, len(data))):
+    for i in tqdm(range(8336, len(data))):
         row += 1
         try:
             create_new_column(user, password, table, column, language, data_type)
